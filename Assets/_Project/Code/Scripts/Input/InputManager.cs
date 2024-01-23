@@ -69,7 +69,7 @@ public class InputManager : ScriptableObject, IPlayerActions
   {
     switch (context.phase)
     {
-      case InputActionPhase.Started:
+      case InputActionPhase.Performed:
         LeftClick.Invoke();
         break;
     }
@@ -79,7 +79,7 @@ public class InputManager : ScriptableObject, IPlayerActions
   {
     switch (context.phase)
     {
-      case InputActionPhase.Started:
+      case InputActionPhase.Performed:
         RightClick.Invoke();
         break;
     }
