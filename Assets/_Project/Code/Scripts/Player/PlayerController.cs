@@ -32,6 +32,12 @@ public class PlayerController : MonoBehaviour
   [SerializeField] private Transform orientation;
   [SerializeField] private Transform cinemachineCam;
 
+  // Getters and Setter
+  public InputManager Input
+  {
+      get { return input; }
+  }
+
   // Camera variables
   private float sensMultiplier = 1f;
   private float deviceMultiplier;
