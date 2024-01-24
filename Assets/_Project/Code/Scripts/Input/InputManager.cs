@@ -15,7 +15,8 @@ public class InputManager : ScriptableObject, IPlayerActions
 
   private Controls controls;
 
-  public Vector3 Direction => controls.Player.Move.ReadValue<Vector2>();
+  public Vector2 Direction => controls.Player.Move.ReadValue<Vector2>();
+  public Vector2 Mouse => controls.Player.Look.ReadValue<Vector2>();
 
   private void OnEnable()
   {

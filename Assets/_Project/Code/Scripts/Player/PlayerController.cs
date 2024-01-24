@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
   // Camera variables
   private float sensMultiplier = 1f;
+  private float deviceMultiplier;
   private float desiredX;
   private float xRotation;
 
@@ -112,6 +114,11 @@ public class PlayerController : MonoBehaviour
   private void FixedUpdate()
   {
     HandleMovement();
+  }
+
+  private void Update()
+  {
+    HandleLook();
   }
 
   private void HandleMovement()
@@ -278,10 +285,15 @@ public class PlayerController : MonoBehaviour
       CancelInvoke("CancelWallrun");
     }
   }
+
   private void OnLook(Vector2 cameraMovement, bool isDeviceMouse)
   {
-    float deviceMultiplier = isDeviceMouse ? Time.fixedDeltaTime : Time.deltaTime * 75;
-
+    // If device is mouse use fixedDeltaTime, otherwise use deltaTime
+    deviceMultiplier = isDeviceMouse ? Time.fixedDeltaTime : Time.deltaTime * 25;
+  }
+  private void HandleLook()
+  {
+    Vector3 cameraMovement = new Vector3(input.Mouse.x, input.Mouse.y, 0);
     cameraMovement *= sensitivity * deviceMultiplier * sensMultiplier;
 
     desiredX = cinemachineCam.transform.localRotation.eulerAngles.y + cameraMovement.x;
