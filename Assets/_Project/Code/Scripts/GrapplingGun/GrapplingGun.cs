@@ -12,6 +12,8 @@ public class GrapplingGun : MonoBehaviour
     [SerializeField] private Transform gunTip;
 
     [Header("Grapple Config")]
+    [SerializeField] private float launchSpeed = 12f;
+    [SerializeField] private float launchDistance = 5f;
     [SerializeField] private float maxJointDistance = 0.8f;
     [SerializeField] private float minJointDistance = 0.25f;
     [SerializeField] private float jointSpring = 4.5f;
@@ -20,7 +22,7 @@ public class GrapplingGun : MonoBehaviour
     
     [Space(15)]
 
-    private LayerMask whatIsGrappleable;
+    [SerializeField] private LayerMask whatIsGrappleable;
 
     [Header("References")]
     [SerializeField] private Transform player;
@@ -29,8 +31,10 @@ public class GrapplingGun : MonoBehaviour
     [SerializeField] private Rigidbody playerRigidbody;
     [SerializeField] private LineRenderer lineRenderer;
     
-    private Vector3 grapplePoint;
+    public Vector3 grapplePoint { get; private set; }
     private SpringJoint joint;
+
+    private bool isLaunching = false;
     
     private void Awake()
     {
@@ -40,6 +44,7 @@ public class GrapplingGun : MonoBehaviour
         camera = Camera.main.transform; 
 
         lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 0;
     }
 
     private void OnEnable()
@@ -48,27 +53,51 @@ public class GrapplingGun : MonoBehaviour
         input.RightClick += Launch;
     }
 
+    private void OnDisable()
+    {
+        input.LeftClick -= Shot;
+        input.RightClick -= Launch;
+    }
+
     private void Launch(bool isDown)
     {
-        throw new System.NotImplementedException();
+        if (isDown)
+        {
+            if (IsGrappling())
+            {
+                isLaunching = true;
+            }
+        }
     }
 
     private void Shot(bool isDown)
     {
         if (isDown)
         {
-            StartGrapple();
-        }
-        else
-        {
-            StopGrapple();
+            if (IsGrappling())
+            {
+                StopGrapple();
+            }
+            else
+            {
+                StartGrapple();
+            }
         }
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        input.LeftClick -= Shot;
-        input.RightClick -= Launch;
+        if (isLaunching)
+        {
+            Vector3 direction = grapplePoint - player.position;
+            playerRigidbody.AddRelativeForce(direction.normalized * launchSpeed, ForceMode.Force);
+
+            if (Vector3.Distance(player.position, grapplePoint) < launchDistance)
+            {
+                isLaunching = false;
+                StopGrapple();
+            }
+        }
     }
 
     private void LateUpdate()
