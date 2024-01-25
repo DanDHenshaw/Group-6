@@ -1,30 +1,31 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GrapplingGun : MonoBehaviour
 {
-    [Header("Weapon Config")] [SerializeField]
-    private float maxDistance;
+    [Header("Weapon Config")]
+    [SerializeField] private float maxDistance;
+    public Transform muzzle;
 
-    public Transform gunTip;
-
-    [Header("Prediction")] [SerializeField]
-    private RaycastHit predictionHit;
-
+    [Header("Prediction")]
+    [SerializeField] private RaycastHit predictionHit;
     [SerializeField] private float predictionSphereCastRadius;
     [SerializeField] private GameObject predictionPointObject;
 
-    [Space(15)] public Grapple grapple;
+    [Space(15)]
+
+    public Grapple grapple;
     public Swing swing;
 
-    [Space(15)] [SerializeField] private LayerMask whatIsGrappleable;
+    [Space(15)]
 
-    [Header("References")] [SerializeField]
-    private PlayerController playerController;
+    [SerializeField] private LayerMask whatIsGrappleable;
 
+    [Header("References")]
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private InputManager input;
     [SerializeField] private Transform cam;
+    [SerializeField] private LineRenderer lineRenderer;
 
     public Vector3 grapplePoint { get; private set; }
     private Transform predictionPoint;
@@ -36,6 +37,9 @@ public class GrapplingGun : MonoBehaviour
         playerController.grapplingGun = this;
 
         cam = Camera.main.transform;
+
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.enabled = false;
     }
 
     private void OnEnable()
@@ -59,26 +63,35 @@ public class GrapplingGun : MonoBehaviour
     private void Update()
     {
         if (grapple.cooldownTimer > 0)
-        {
             grapple.cooldownTimer -= Time.deltaTime;
-        }
 
         CheckForSwingPoints();
     }
 
-    //// <summary>
-    //// Starts the grapple hook when input has been detected
-    //// </summary>
-    //// <param name="isDown"> bool - whether right click is pressed or released </param>
-    private void HandleGrapple(bool isDown)
+    private void LateUpdate()
     {
-        StartGrapple();
+        if (swing.isSwinging || grapple.isGrappling)
+        {
+            lineRenderer.SetPosition(0,muzzle.position);
+        }
     }
 
-    //// <summary>
-    //// Starts and Stops the Swing when input has been detected
-    //// </summary>
-    //// <param name="isDown"> bool - whether right click is pressed or released </param>
+    /// <summary>
+    /// Starts the grapple hook when input has been detected
+    /// </summary>
+    /// <param name="isDown"> bool - whether right click is pressed or released </param>
+    private void HandleGrapple(bool isDown)
+    {
+        if (isDown)
+        {
+            StartGrapple();
+        }
+    }
+
+    /// <summary>
+    /// Starts and Stops the Swing when input has been detected
+    /// </summary>
+    /// <param name="isDown"> bool - whether right click is pressed or released </param>
     private void HandleSwing(bool isDown)
     {
         if (isDown && !swing.isSwinging)
@@ -94,7 +107,6 @@ public class GrapplingGun : MonoBehaviour
     /// <summary>
     /// Starts the grapple - freeze the player in place and execute the next stage for the grapple
     /// </summary>
-    /// 
     private void StartGrapple()
     {
         if (grapple.cooldownTimer > 0) return;
@@ -106,8 +118,18 @@ public class GrapplingGun : MonoBehaviour
         if (predictionHit.point == Vector3.zero)
         {
             grapplePoint = cam.position + cam.forward * maxDistance;
+            Invoke(nameof(StopGrapple), grapple.delayTime);
+        }
+        else
+        {
+            grapplePoint = predictionHit.point;
+
             Invoke(nameof(ExecuteGrapple), grapple.delayTime);
         }
+
+        lineRenderer.enabled = true;
+        lineRenderer.SetPosition(1,grapplePoint);
+
     }
 
     /// <summary>
@@ -120,11 +142,11 @@ public class GrapplingGun : MonoBehaviour
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
 
         float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
-        float highestPointOnArc = grapplePointRelativeYPos + grapple.overShootYAxis;
+        float hightestPointOnArc = grapplePointRelativeYPos + grapple.overShootYAxis;
 
-        if (grapplePointRelativeYPos < 0) highestPointOnArc = grapple.overShootYAxis;
+        if (grapplePointRelativeYPos < 0) hightestPointOnArc = grapple.overShootYAxis;
 
-        playerController.JumpToPosition(grapplePoint, highestPointOnArc);
+        playerController.JumpToPosition(grapplePoint, hightestPointOnArc);
 
         Invoke(nameof(StopGrapple), 1f);
     }
@@ -139,6 +161,8 @@ public class GrapplingGun : MonoBehaviour
         playerController.freeze = false;
 
         grapple.cooldownTimer = grapple.cooldown;
+
+        lineRenderer.enabled = false;
     }
 
     /// <summary>
@@ -164,6 +188,9 @@ public class GrapplingGun : MonoBehaviour
         swing.joint.spring = swing.jointSpring;
         swing.joint.damper = swing.jointDamper;
         swing.joint.massScale = swing.jointMassScale;
+
+        lineRenderer.enabled = true;
+        lineRenderer.SetPosition(1, grapplePoint);
     }
 
     /// <summary>
@@ -173,6 +200,8 @@ public class GrapplingGun : MonoBehaviour
     {
         swing.isSwinging = false;
         Destroy(swing.joint);
+
+        lineRenderer.enabled = false;
     }
 
     /// <summary>
@@ -183,8 +212,7 @@ public class GrapplingGun : MonoBehaviour
         if (swing.isSwinging) return;
 
         RaycastHit sphereCastHit;
-        Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, out sphereCastHit, maxDistance,
-            whatIsGrappleable);
+        Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, out sphereCastHit, maxDistance, whatIsGrappleable);
 
         RaycastHit raycastHit;
         Physics.Raycast(cam.position, cam.forward, out raycastHit, maxDistance, whatIsGrappleable);
@@ -193,21 +221,15 @@ public class GrapplingGun : MonoBehaviour
 
         // Option 1 - Direct Hit
         if (raycastHit.point != Vector3.zero)
-        {
             realHitPoint = raycastHit.point;
-        }
 
         // Option 2 - Indirect (predicted) Hit
         else if (sphereCastHit.point != Vector3.zero)
-        {
             realHitPoint = sphereCastHit.point;
-        }
 
         // Option 3 - Miss
         else
-        {
             realHitPoint = Vector3.zero;
-        }
 
         // realHitPoint found
         if (realHitPoint != Vector3.zero)
@@ -229,18 +251,19 @@ public class GrapplingGun : MonoBehaviour
 public class Grapple
 {
     public float delayTime;
- 
+
     [Space(10)]
-     
+
     public float cooldown;
     [HideInInspector] public float cooldownTimer;
-    
+
     [Space(10)]
-    
+
     [HideInInspector] public bool isGrappling;
     public float overShootYAxis;
 }
 
+[System.Serializable]
 public class Swing
 {
     public float jointMaxDistance = 0.8f;

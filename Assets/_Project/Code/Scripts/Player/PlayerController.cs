@@ -4,578 +4,582 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-  [Header("Camera Config")]
-  [SerializeField] private float sensitivity = 50f;
+    [Header("Camera Config")]
+    [SerializeField] private float sensitivity = 50f;
 
-  [Header("Movement Config")]
-  [SerializeField] private float moveSpeed = 4500.0f;
-  [SerializeField] private float walkSpeed = 20.0f;
-  [SerializeField] private float runSpeed = 10.0f;
+    [Header("Movement Config")]
+    [SerializeField] private float moveSpeed = 4500.0f;
+    [SerializeField] private float walkSpeed = 20.0f;
+    [SerializeField] private float runSpeed = 10.0f;
 
-  [Header("Jumping Config")]
-  [SerializeField] private float jumpForce = 550f;
-  [SerializeField] private float jumpCooldown = 0.25f;
+    [Header("Jumping Config")]
+    [SerializeField] private float jumpForce = 550f;
+    [SerializeField] private float jumpCooldown = 0.25f;
 
-  [Header("Sliding Config")]
-  [SerializeField] private float slideForce = 400f;
-  [SerializeField] private float slideSlowdown = 0.2f;
+    [Header("Sliding Config")]
+    [SerializeField] private float slideForce = 400f;
+    [SerializeField] private float slideSlowdown = 0.2f;
 
-  [Space(15)]
+    [Space(15)]
 
-  public LayerMask whatIsGround;
-  public LayerMask whatIsWallrunnable;
+    public LayerMask whatIsGround;
+    public LayerMask whatIsWallrunnable;
 
-  [Header("References")]
-  [SerializeField] private InputManager input;
-  [SerializeField] private Rigidbody _rigidbody;
-  [SerializeField] private Collider _collider;
-  [SerializeField] private Transform orientation;
-  [SerializeField] private Transform cinemachineCam;
+    [Header("References")]
+    [SerializeField] private InputManager input;
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform cinemachineCam;
 
-  // Getters and Setter
-  public InputManager Input => input;
+    // Getters & Setters
+    public InputManager Input => input;
 
-  public bool freeze { get; set; }
+    public bool freeze { get; set; }
 
-  public GrapplingGun grapplingGun { get; set; }
+    public GrapplingGun grapplingGun { get; set; }
 
-  // Camera variables
-  private float sensMultiplier = 1f;
-  private float deviceMultiplier;
-  private float desiredX;
-  private float xRotation;
+    // Camera variables
+    private float sensMultiplier = 1f;
+    private float deviceMultiplier;
+    private float desiredX;
+    private float xRotation;
 
-  // Moving variables
-  private float x, y;
-  private bool isSprinting = false;
-  private bool isSurfing = false;
-  private bool cancellingSurf;
-  float maxSlopeAngle = 35f;
+    // Moving variables
+    private float x, y;
+    private bool isSprinting = false;
+    private bool isSurfing = false;
+    private bool cancellingSurf;
+    float maxSlopeAngle = 35f;
 
-  // Sliding variables
-  private bool isCrouching = false;
+    // Sliding variables
+    private bool isCrouching = false;
 
-  // Jumping variables
-  private bool isJumping = false;
-  private bool readyToJump;
-  private Vector3 normalVector;
+    // Jumping variables
+    private bool isJumping = false;
+    private bool readyToJump;
+    private Vector3 normalVector;
 
-  // Wall running variables
-  private float wallRunGravity = 1f;
-  private Vector3 wallNormalVector;
-  private bool isWallrunning = false;
-  private bool readyToWallrun = true;
-  private bool isCancelling;
-  private float actualWallRotation;
-  private float wallRunRotation;
-  private float wallRotationVel;
-  private bool onWall;
-  private bool cancellingWall;
+    // Wall running variables
+    private float wallRunGravity = 1f;
+    private Vector3 wallNormalVector;
+    private bool isWallrunning = false;
+    private bool readyToWallrun = true;
+    private bool isCancelling;
+    private float actualWallRotation;
+    private float wallRunRotation;
+    private float wallRotationVel;
+    private bool cancellingWall;
 
-  // Grounded variables
-  private bool isGrounded;
-  private bool cancellingGrounded;
+    // Grounded variables
+    private bool isGrounded;
+    private bool cancellingGrounded;
 
-  // Grapple variables
-  private bool isGrapple;
-  private Vector3 velocityToSet;
-  private bool enableMovementOnNextTouch;
+    // Grapple variables
+    private bool isGrapple;
+    private Vector3 velocityToSet;
+    private bool enableMovementOnNextTouch;
 
-  private void OnEnable()
-  {
-    input.Jump += OnJump;
-    input.Slide += OnSlide;
-
-    input.Look += OnLook;
-  }
-
-  private void OnDisable()
-  {
-    input.Jump -= OnJump;
-    input.Slide -= OnSlide;
-
-    input.Look -= OnLook;
-  }
-
-  private void Awake()
-  {
-    _rigidbody = GetComponent<Rigidbody>();
-    _collider = GetComponent<Collider>();
-
-    cinemachineCam = FindObjectOfType<CinemachineVirtualCamera>().transform;
-  }
-
-  private void Start()
-  {
-    input.EnablePlayerActions();
-
-    Cursor.lockState = CursorLockMode.Locked;
-    Cursor.visible = false;
-
-    readyToJump = true;
-    wallNormalVector = Vector3.up;
-  }
-
-  private void LateUpdate()
-  {
-    if (isGrapple) return;
-
-    if (isWallrunning) HandleWallRunning();
-  }
-
-  private void FixedUpdate()
-  { 
-    if (isGrapple) return;
-
-    HandleMovement();
-  }
-
-  private void Update()
-  {
-    if (freeze)
+    private void OnEnable()
     {
-        _rigidbody.velocity = Vector3.zero;
+        input.Jump += OnJump;
+        input.Slide += OnSlide;
+
+        input.Look += OnLook;
     }
 
-    HandleLook();
-  }
+    private void OnDisable()
+    {
+        input.Jump -= OnJump;
+        input.Slide -= OnSlide;
 
-  /// <summary>
-  /// Handles player movement
-  /// </summary>
-  private void HandleMovement()
-  {
-    x = input.Direction.x;
-    y = input.Direction.y;
-
-    _rigidbody.AddForce(Vector3.down * Time.deltaTime * 10f);
-    Vector2 mag = FindVelRelativeToLook();
-    CounterMovement(x, y, mag);
-
-    float speed = isSprinting ? runSpeed : walkSpeed;
-
-    if (isCrouching && isGrounded && readyToJump)
-    {
-      _rigidbody.AddForce(Vector3.down * Time.deltaTime * 3000f);
-      return;
-    }
-    if (x > 0f && mag.x > speed)
-    {
-      x = 0f;
-    }
-    if (x < 0f && mag.x < 0f - speed)
-    {
-      x = 0f;
-    }
-    if (y > 0f && mag.y > speed)
-    {
-      y = 0f;
-    }
-    if (y < 0f && mag.y < 0f - speed)
-    {
-      y = 0f;
+        input.Look -= OnLook;
     }
 
-    float friction_y = 1f;
-    float friction_x = 1f;
-    if (!isGrounded)
+    private void Awake()
     {
-      friction_y = 0.5f;
-      friction_x = 0.5f;
-    }
-    if (isGrounded && isCrouching)
-    {
-      friction_x = 0f;
-    }
-    if (isWallrunning)
-    {
-      friction_x = 0.3f;
-      friction_y = 0.3f;
-    }
-    if (isSurfing)
-    {
-      friction_y = 0.7f;
-      friction_x = 0.3f;
-    }
-    _rigidbody.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * friction_y * friction_x);
-    _rigidbody.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * friction_y);
-  }
-
-  /// <summary>
-  /// Calculates velocity relative to the look direction
-  /// </summary>
-  /// <returns> Vector2 - velocity relative to look direction </returns>
-  private Vector2 FindVelRelativeToLook()
-  {
-    float current = orientation.transform.eulerAngles.y;
-    float target = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * 57.29578f;
-    float distance = Mathf.DeltaAngle(current, target);
-    float magnitude = _rigidbody.velocity.magnitude;
-    return new Vector2(y: magnitude * Mathf.Cos(distance * ((float)Math.PI / 180f)), x: magnitude * Mathf.Cos((90 - distance) * ((float)Math.PI / 180f)));
-  }
-
-  /// <summary>
-  /// Applies force to counter the movement of the player
-  /// </summary>
-  /// <param name="x"> float - Player input on the x axis </param>
-  /// <param name="y"> float - Player input on the z axis </param>
-  /// <param name="mag"> Vector2 - Current magnitude of the player rigidbody </param>
-  private void CounterMovement(float x, float y, Vector2 mag)
-  {
-    if (!isGrounded || isJumping)
-    {
-      return;
-    }
-    float mag_multiplier = 0.16f;
-    float min_mag = 0.01f;
-    if (isCrouching)
-    {
-      _rigidbody.AddForce(moveSpeed * Time.deltaTime * -_rigidbody.velocity.normalized * slideSlowdown);
-      return;
-    }
-    if ((Math.Abs(mag.x) > min_mag && Math.Abs(x) < 0.05f) || (mag.x < 0f - min_mag && x > 0f) || (mag.x > min_mag && x < 0f))
-    {
-      _rigidbody.AddForce(moveSpeed * orientation.transform.right * Time.deltaTime * (0f - mag.x) * mag_multiplier);
-    }
-    if ((Math.Abs(mag.y) > min_mag && Math.Abs(y) < 0.05f) || (mag.y < 0f - min_mag && y > 0f) || (mag.y > min_mag && y < 0f))
-    {
-      _rigidbody.AddForce(moveSpeed * orientation.transform.forward * Time.deltaTime * (0f - mag.y) * mag_multiplier);
-    }
-    if (Mathf.Sqrt(Mathf.Pow(_rigidbody.velocity.x, 2f) + Mathf.Pow(_rigidbody.velocity.z, 2f)) > walkSpeed)
-    {
-      float y_vel = _rigidbody.velocity.y;
-      Vector3 direction = _rigidbody.velocity.normalized * walkSpeed;
-      _rigidbody.velocity = new Vector3(direction.x, y_vel, direction.z);
-    }
-  }
-
-  /// <summary>
-  /// Apply forces to the player allowing them to stick to the wall they're running on
-  /// </summary>
-  private void HandleWallRunning()
-  {
-      _rigidbody.AddForce(-wallNormalVector * Time.deltaTime * moveSpeed);
-      _rigidbody.AddForce(Vector3.up * Time.deltaTime * _rigidbody.mass * 100f * wallRunGravity);
-  }
-
-  /// <summary>
-  /// Stops the wall run and applies a force to the player in the direction of the walls normal
-  /// </summary>
-  private void CancelWallrun()
-  {
-    Invoke("GetReadyToWallrun", 0.1f);
-    _rigidbody.AddForce(wallNormalVector * 600f);
-    readyToWallrun = false;
-  }
-
-  private void GetReadyToWallrun()
-  {
-    readyToWallrun = true;
-  }
-
-  /// <summary>
-  /// Calculates the rotation of the wall that the player is currently wallrunning
-  /// </summary>
-  private void FindWallRunRotation()
-  {
-    if (!isWallrunning)
-    {
-      wallRunRotation = 0f;
-      return;
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
-    float current_cam_y = cinemachineCam.transform.rotation.eulerAngles.y;
-    float signed_angle = Vector3.SignedAngle(new Vector3(0f, 0f, 1f), wallNormalVector, Vector3.up);
-    float wall_distance = Mathf.DeltaAngle(current_cam_y, signed_angle);
-    wallRunRotation = (0f - wall_distance / 90f) * 15f;
-    if (!readyToWallrun)
+    private void Start()
     {
-      return;
+        input.EnablePlayerActions();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        readyToJump = true;
+        wallNormalVector = Vector3.up;
     }
-    if ((Mathf.Abs(wallRunRotation) < 4f && y > 0f && Math.Abs(x) < 0.1f) || (Mathf.Abs(wallRunRotation) > 22f && y < 0f && Math.Abs(x) < 0.1f))
+
+    private void LateUpdate()
     {
-      if (!isCancelling)
-      {
-        isCancelling = true;
-        CancelInvoke("CancelWallrun");
-        Invoke("CancelWallrun", 0.2f);
-      }
+        if (isGrapple) return;
+
+        if (isWallrunning) HandleWallRunning();
     }
-    else
+
+    private void FixedUpdate()
     {
-      isCancelling = false;
-      CancelInvoke("CancelWallrun");
+        if (isGrapple) return;
+
+        HandleMovement();
     }
-  }
 
-  /// <summary>
-  /// Sets the device multiplier depending on whether the player is using a mouse or gamepad
-  /// </summary>
-  private void OnLook(Vector2 cameraMovement, bool isDeviceMouse)
-  {
-    // If device is mouse use fixedDeltaTime, otherwise use deltaTime
-    deviceMultiplier = isDeviceMouse ? Time.fixedDeltaTime : Time.deltaTime * 25;
-  }
-
-  /// <summary>
-  /// Handles the players look direction
-  /// </summary>
-  private void HandleLook()
-  {
-    Vector3 cameraMovement = new Vector3(input.Mouse.x, input.Mouse.y, 0);
-    cameraMovement *= sensitivity * deviceMultiplier * sensMultiplier;
-
-    desiredX = cinemachineCam.transform.localRotation.eulerAngles.y + cameraMovement.x;
-    xRotation -= cameraMovement.y;
-    xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-    FindWallRunRotation();
-    actualWallRotation = Mathf.SmoothDamp(actualWallRotation, wallRunRotation, ref wallRotationVel, 0.2f);
-    cinemachineCam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, actualWallRotation);
-    orientation.transform.localRotation = Quaternion.Euler(0f, desiredX, 0f);
-  }
-
-  private void ResetJump()
-  {
-    readyToJump = true;
-    isJumping = false;
-  }
-
-  /// <summary>
-  /// When the player jumps apply force in an upwards direction
-  /// </summary>
-  private void OnJump()
-  {
-    if ((isGrounded || isWallrunning || isSurfing) && readyToJump)
+    private void Update()
     {
-      isJumping = true;
+        if (freeze)
+        {
+            _rigidbody.velocity = Vector3.zero;
+        }
 
-      Vector3 velocity = _rigidbody.velocity;
-      readyToJump = false;
-      _rigidbody.AddForce(Vector3.up * jumpForce * 1.5f);
-      _rigidbody.AddForce(normalVector * jumpForce * 0.5f);
-      if (_rigidbody.velocity.y < 0.5f)
-      {
-        _rigidbody.velocity = new Vector3(velocity.x, 0f, velocity.z);
-      }
-      else if (_rigidbody.velocity.y > 0f)
-      {
-        _rigidbody.velocity = new Vector3(velocity.x, velocity.y / 2f, velocity.z);
-      }
-      if (isWallrunning)
-      {
-        _rigidbody.AddForce(wallNormalVector * jumpForce * 3f);
-      }
-      Invoke("ResetJump", jumpCooldown);
-      if (isWallrunning)
-      {
-        isWallrunning = false;
-      }
+        HandleLook();
     }
-  }
 
-  /// <summary>
-  /// When the player slides apply force in an forwards direction and shrink the player model/collisions
-  /// </summary>
-  private void OnSlide(bool isSliding)
-  {
-    if (isSliding)
+    /// <summary>
+    /// Handles player movement
+    /// </summary>
+    private void HandleMovement()
     {
-      isCrouching = true;
+        x = input.Direction.x;
+        y = input.Direction.y;
 
-      transform.localScale = new Vector3(1f, 0.5f, 1f);
-      transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-      if (_rigidbody.velocity.magnitude > 0.1f && isGrounded)
-      {
-        _rigidbody.AddForce(orientation.transform.forward * slideForce);
-      }
-    } else
-    {
-      isCrouching = false;
+        _rigidbody.AddForce(Vector3.down * Time.deltaTime * 10f);
+        Vector2 mag = FindVelRelativeToLook();
+        CounterMovement(x, y, mag);
 
-      transform.localScale = new Vector3(1f, 1.5f, 1f);
-      transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-    }
-  }
+        float speed = isSprinting ? runSpeed : walkSpeed;
 
-  /// <summary>
-  /// Detects if the normal param is a floor
-  /// </summary>
-  /// <param name="v"> Vector3 - Collision normal </param>
-  /// <returns> bool - whether or not that normal is a floor </returns>
-  private bool IsFloor(Vector3 v)
-  {
-    return Vector3.Angle(Vector3.up, v) < maxSlopeAngle;
-  }
+        if (isCrouching && isGrounded && readyToJump)
+        {
+            _rigidbody.AddForce(Vector3.down * Time.deltaTime * 3000f);
+            return;
+        }
+        if (x > 0f && mag.x > speed)
+        {
+            x = 0f;
+        }
+        if (x < 0f && mag.x < 0f - speed)
+        {
+            x = 0f;
+        }
+        if (y > 0f && mag.y > speed)
+        {
+            y = 0f;
+        }
+        if (y < 0f && mag.y < 0f - speed)
+        {
+            y = 0f;
+        }
 
-  /// <summary>
-  /// Detects if the normal param is surfable
-  /// </summary>
-  /// <param name="v"> Vector3 - Collision normal </param>
-  /// <returns> bool - whether or not that normal is surfable </returns>
-  private bool IsSurf(Vector3 v)
-  {
-    float num = Vector3.Angle(Vector3.up, v);
-    if (num < 89f)
-    {
-      return num > maxSlopeAngle;
-    }
-    return false;
-  }
-
-  /// <summary>
-  /// Detects if the normal param is a wall
-  /// </summary>
-  /// <param name="v"> Vector3 - Collision normal </param>
-  /// <returns> bool - whether or not that normal is a wall </returns>
-  private bool IsWall(Vector3 v)
-  {
-    return Math.Abs(90f - Vector3.Angle(Vector3.up, v)) < 0.1f;
-  }
-
-  /// <summary>
-  /// Detects if the normal param is a roof
-  /// </summary>
-  /// <param name="v"> Vector3 - Collision normal </param>
-  /// <returns> bool - whether or not that normal is a roof </returns>
-  private bool IsRoof(Vector3 v)
-  {
-    return v.y == -1f;
-  }
-
-  /// <summary>
-  /// Starts a wallrun if the player is ready to wallrun
-  /// </summary>
-  /// <param name="normal"> Vector3 - wallrun normal </param>
-  private void StartWallRun(Vector3 normal)
-  {
-    if (!isGrounded && readyToWallrun)
-    {
-      wallNormalVector = normal;
-      float up_force = 20f;
-      if (!isWallrunning)
-      {
-        _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
-        _rigidbody.AddForce(Vector3.up * up_force, ForceMode.Impulse);
-      }
-      isWallrunning = true;
-    }
-  }
-
-  private void OnCollisionStay(Collision other)
-  {
-    int layer = other.gameObject.layer;
-    if ((int)whatIsGround != ((int)whatIsGround | (1 << layer)))
-    {
-      return;
-    }
-    for (int i = 0; i < other.contactCount; i++)
-    {
-      Vector3 normal = other.contacts[i].normal;
-      if (IsFloor(normal))
-      {
+        float friction_y = 1f;
+        float friction_x = 1f;
+        if (!isGrounded)
+        {
+            friction_y = 0.5f;
+            friction_x = 0.5f;
+        }
+        if (isGrounded && isCrouching)
+        {
+            friction_x = 0f;
+        }
         if (isWallrunning)
         {
-          isWallrunning = false;
+            friction_x = 0.3f;
+            friction_y = 0.3f;
         }
-        isGrounded = true;
-        normalVector = normal;
-        cancellingGrounded = false;
-        CancelInvoke("StopGrounded");
-      }
-      if (IsWall(normal) && layer == LayerMask.NameToLayer("Ground"))
-      {
-        StartWallRun(normal);
-        onWall = true;
-        cancellingWall = false;
-        CancelInvoke("StopWall");
-      }
-      if (IsSurf(normal))
-      {
-        isSurfing = true;
-        cancellingSurf = false;
-        CancelInvoke("StopSurf");
-      }
-      IsRoof(normal);
+        if (isSurfing)
+        {
+            friction_y = 0.7f;
+            friction_x = 0.3f;
+        }
+        _rigidbody.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * friction_y * friction_x);
+        _rigidbody.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * friction_y);
     }
-    float stop_time = 3f;
-    if (!cancellingGrounded)
+
+    /// <summary>
+    /// Calculates velocity relative to the look direction
+    /// </summary>
+    /// <returns> Vector2 - velocity relative to look direction </returns>
+    private Vector2 FindVelRelativeToLook()
     {
-      cancellingGrounded = true;
-      Invoke("StopGrounded", Time.deltaTime * stop_time);
+        float current = orientation.transform.eulerAngles.y;
+        float target = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * 57.29578f;
+        float distance = Mathf.DeltaAngle(current, target);
+        float magnitude = _rigidbody.velocity.magnitude;
+        return new Vector2(y: magnitude * Mathf.Cos(distance * ((float)Math.PI / 180f)), x: magnitude * Mathf.Cos((90 - distance) * ((float)Math.PI / 180f)));
     }
-    if (!cancellingWall)
+
+    /// <summary>
+    /// Applies force to counter the movement of the player
+    /// </summary>
+    /// <param name="x"> float - Player input on the x axis </param>
+    /// <param name="y"> float - Player input on the z axis </param>
+    /// <param name="mag"> Vector2 - Current magnitude of the player rigidbody </param>
+    private void CounterMovement(float x, float y, Vector2 mag)
     {
-      cancellingWall = true;
-      Invoke("StopWall", Time.deltaTime * stop_time);
+        if (!isGrounded || isJumping)
+        {
+            return;
+        }
+        float mag_multiplier = 0.16f;
+        float min_mag = 0.01f;
+        if (isCrouching)
+        {
+            _rigidbody.AddForce(moveSpeed * Time.deltaTime * -_rigidbody.velocity.normalized * slideSlowdown);
+            return;
+        }
+        if ((Math.Abs(mag.x) > min_mag && Math.Abs(x) < 0.05f) || (mag.x < 0f - min_mag && x > 0f) || (mag.x > min_mag && x < 0f))
+        {
+            _rigidbody.AddForce(moveSpeed * orientation.transform.right * Time.deltaTime * (0f - mag.x) * mag_multiplier);
+        }
+        if ((Math.Abs(mag.y) > min_mag && Math.Abs(y) < 0.05f) || (mag.y < 0f - min_mag && y > 0f) || (mag.y > min_mag && y < 0f))
+        {
+            _rigidbody.AddForce(moveSpeed * orientation.transform.forward * Time.deltaTime * (0f - mag.y) * mag_multiplier);
+        }
+        if (Mathf.Sqrt(Mathf.Pow(_rigidbody.velocity.x, 2f) + Mathf.Pow(_rigidbody.velocity.z, 2f)) > walkSpeed)
+        {
+            float y_vel = _rigidbody.velocity.y;
+            Vector3 direction = _rigidbody.velocity.normalized * walkSpeed;
+            _rigidbody.velocity = new Vector3(direction.x, y_vel, direction.z);
+        }
     }
-    if (!cancellingSurf)
+
+    /// <summary>
+    /// Apply forces to the player allowing them to stick to the wall they're running on
+    /// </summary>
+    private void HandleWallRunning()
     {
-      cancellingSurf = true;
-      Invoke("StopSurf", Time.deltaTime * stop_time);
+        _rigidbody.AddForce(-wallNormalVector * Time.deltaTime * moveSpeed);
+        _rigidbody.AddForce(Vector3.up * Time.deltaTime * _rigidbody.mass * 100f * wallRunGravity);
     }
-  }
 
-  private void StopGrounded()
-  {
-    isGrounded = false;
-  }
+    /// <summary>
+    /// Stops the wall run and applies a force to the player in the direction of the walls normal
+    /// </summary>
+    private void CancelWallrun()
+    {
+        Invoke("GetReadyToWallrun", 0.1f);
+        _rigidbody.AddForce(wallNormalVector * 600f);
+        readyToWallrun = false;
+    }
 
-  private void StopWall()
-  {
-    onWall = false;
-    isWallrunning = false;
-  }
+    private void GetReadyToWallrun()
+    {
+        readyToWallrun = true;
+    }
 
-  private void StopSurf()
-  {
-    isSurfing = false;
-  }
+    /// <summary>
+    /// Calculates the rotation of the wall that the player is currently wallrunning
+    /// </summary>
+    private void FindWallRunRotation()
+    {
+        if (!isWallrunning)
+        {
+            wallRunRotation = 0f;
+            return;
+        }
 
-  //// <summary>
-  //// Launches the player towards the target position using trajectoryHeight
-  //// <summary>
-  //// <param name="targetPosition"> Vector3 - the grapple point </param>
-  //// <param name="trajectoryHeight"> float - calculated trajectory arc betweem the players current position and target position </param>
-  public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
-  { 
-    isGrapple = true;
+        float current_cam_y = cinemachineCam.transform.rotation.eulerAngles.y;
+        float signed_angle = Vector3.SignedAngle(new Vector3(0f, 0f, 1f), wallNormalVector, Vector3.up);
+        float wall_distance = Mathf.DeltaAngle(current_cam_y, signed_angle);
+        wallRunRotation = (0f - wall_distance / 90f) * 15f;
+        if (!readyToWallrun)
+        {
+            return;
+        }
+        if ((Mathf.Abs(wallRunRotation) < 4f && y > 0f && Math.Abs(x) < 0.1f) || (Mathf.Abs(wallRunRotation) > 22f && y < 0f && Math.Abs(x) < 0.1f))
+        {
+            if (!isCancelling)
+            {
+                isCancelling = true;
+                CancelInvoke("CancelWallrun");
+                Invoke("CancelWallrun", 0.2f);
+            }
+        }
+        else
+        {
+            isCancelling = false;
+            CancelInvoke("CancelWallrun");
+        }
+    }
 
-    velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-    Invoke(nameof(SetVelocity), 0.1f);
+    /// <summary>
+    /// Sets the device multiplier depending on whether the player is using a mouse or gamepad
+    /// </summary>
+    private void OnLook(Vector2 cameraMovement, bool isDeviceMouse)
+    {
+        // If device is mouse use fixedDeltaTime, otherwise use deltaTime
+        deviceMultiplier = isDeviceMouse ? Time.fixedDeltaTime : Time.deltaTime * 25;
+    }
 
-    Invoke(nameof(ResetRestrictions), 3f);
-  }
+    /// <summary>
+    /// Handles the players look direction
+    /// </summary>
+    private void HandleLook()
+    {
+        Vector3 cameraMovement = new Vector3(input.Mouse.x, input.Mouse.y, 0);
+        cameraMovement *= sensitivity * deviceMultiplier * sensMultiplier;
 
-  /// <sumary>
-  /// Sets the players velocity to the calculates jump velocity
-  /// <sumary>
-  private void SetVelocity()
-  { 
-    enableMovementOnNextTouch = true;
-    _rigidbody.velocity = velocityToSet;
-  }
+        desiredX = cinemachineCam.transform.localRotation.eulerAngles.y + cameraMovement.x;
+        xRotation -= cameraMovement.y;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        FindWallRunRotation();
+        actualWallRotation = Mathf.SmoothDamp(actualWallRotation, wallRunRotation, ref wallRotationVel, 0.2f);
+        cinemachineCam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, actualWallRotation);
+        orientation.transform.localRotation = Quaternion.Euler(0f, desiredX, 0f);
+    }
 
-  private void ResetRestrictions()
-  {
-    isGrapple = false;
-  }
+    private void ResetJump()
+    {
+        readyToJump = true;
+        isJumping = false;
+    }
 
-  //// <summary>
-  //// Calculates the jump velocity of the player between the startpoint and endpoint using calculatged trajectory using a kinematic equations.
-  //// </summary>
-  //// <param name="startPoint"> Vector3 - starting position of the player </param>
-  //// <param name="endPoint"> Vector3 - grapple point the player is targeting </param>
-  //// <param name="trajectoryHeight"> float - calculated trajectory arc between the start point and end point </param>
-  //// <returns> Vector3 - calculated jump velocity </returns>
-  private Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
-  {
-      float gravity = Physics.gravity.y;
-      float displacementY = endPoint.y - startPoint.y;
-      Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+    /// <summary>
+    /// When the player jumps apply force in an upwards direction
+    /// </summary>
+    private void OnJump()
+    {
+        if ((isGrounded || isWallrunning || isSurfing) && readyToJump)
+        {
+            isJumping = true;
 
-      Vector3 velocityY = Vector3.up * MathF.Sqrt(-2 * gravity * trajectoryHeight);
-      Vector3 velocityXZ = displacementXZ / (MathF.Sqrt(-2 * trajectoryHeight / gravity + MathF.Sqrt(2 * displacementY - trajectoryHeight /gravity)));
+            Vector3 velocity = _rigidbody.velocity;
+            readyToJump = false;
+            _rigidbody.AddForce(Vector3.up * jumpForce * 1.5f);
+            _rigidbody.AddForce(normalVector * jumpForce * 0.5f);
+            if (_rigidbody.velocity.y < 0.5f)
+            {
+                _rigidbody.velocity = new Vector3(velocity.x, 0f, velocity.z);
+            }
+            else if (_rigidbody.velocity.y > 0f)
+            {
+                _rigidbody.velocity = new Vector3(velocity.x, velocity.y / 2f, velocity.z);
+            }
+            if (isWallrunning)
+            {
+                _rigidbody.AddForce(wallNormalVector * jumpForce * 3f);
+            }
+            Invoke("ResetJump", jumpCooldown);
+            if (isWallrunning)
+            {
+                isWallrunning = false;
+            }
+        }
+    }
 
-      return velocityXZ + velocityY;
-  }
+    /// <summary>
+    /// When the player slides apply force in an forwards direction and shrink the player model/collisions
+    /// </summary>
+    private void OnSlide(bool isSliding)
+    {
+        if (isSliding)
+        {
+            isCrouching = true;
+
+            transform.localScale = new Vector3(1f, 0.5f, 1f);
+            transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+            if (_rigidbody.velocity.magnitude > 0.1f && isGrounded)
+            {
+                _rigidbody.AddForce(orientation.transform.forward * slideForce);
+            }
+        }
+        else
+        {
+            isCrouching = false;
+
+            transform.localScale = new Vector3(1f, 1.5f, 1f);
+            transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        }
+    }
+
+    /// <summary>
+    /// Detects if the normal param is a floor
+    /// </summary>
+    /// <param name="v"> Vector3 - Collision normal </param>
+    /// <returns> bool - whether or not that normal is a floor </returns>
+    private bool IsFloor(Vector3 v)
+    {
+        return Vector3.Angle(Vector3.up, v) < maxSlopeAngle;
+    }
+
+    /// <summary>
+    /// Detects if the normal param is surfable
+    /// </summary>
+    /// <param name="v"> Vector3 - Collision normal </param>
+    /// <returns> bool - whether or not that normal is surfable </returns>
+    private bool IsSurf(Vector3 v)
+    {
+        float num = Vector3.Angle(Vector3.up, v);
+        if (num < 89f)
+        {
+            return num > maxSlopeAngle;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Detects if the normal param is a wall
+    /// </summary>
+    /// <param name="v"> Vector3 - Collision normal </param>
+    /// <returns> bool - whether or not that normal is a wall </returns>
+    private bool IsWall(Vector3 v)
+    {
+        return Math.Abs(90f - Vector3.Angle(Vector3.up, v)) < 0.1f;
+    }
+
+    /// <summary>
+    /// Detects if the normal param is a roof
+    /// </summary>
+    /// <param name="v"> Vector3 - Collision normal </param>
+    /// <returns> bool - whether or not that normal is a roof </returns>
+    private bool IsRoof(Vector3 v)
+    {
+        return v.y == -1f;
+    }
+
+    /// <summary>
+    /// Starts a wallrun if the player is ready to wallrun
+    /// </summary>
+    /// <param name="normal"> Vector3 - wallrun normal </param>
+    private void StartWallRun(Vector3 normal)
+    {
+        if (!isGrounded && readyToWallrun)
+        {
+            wallNormalVector = normal;
+            float up_force = 20f;
+            if (!isWallrunning)
+            {
+                _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
+                _rigidbody.AddForce(Vector3.up * up_force, ForceMode.Impulse);
+            }
+            isWallrunning = true;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (enableMovementOnNextTouch)
+        {
+            enableMovementOnNextTouch = false;
+            ResetRestrictions();
+        }
+    }
+
+    private void OnCollisionStay(Collision other)
+    {
+        int layer = other.gameObject.layer;
+        if ((int)whatIsGround != ((int)whatIsGround | (1 << layer)))
+        {
+            return;
+        }
+        for (int i = 0; i < other.contactCount; i++)
+        {
+            Vector3 normal = other.contacts[i].normal;
+            if (IsFloor(normal))
+            {
+                if (isWallrunning)
+                {
+                    isWallrunning = false;
+                }
+                isGrounded = true;
+                normalVector = normal;
+                cancellingGrounded = false;
+                CancelInvoke("StopGrounded");
+            }
+            if (IsWall(normal) && layer == LayerMask.NameToLayer("Ground"))
+            {
+                StartWallRun(normal);
+                cancellingWall = false;
+                CancelInvoke("StopWall");
+            }
+            if (IsSurf(normal))
+            {
+                isSurfing = true;
+                cancellingSurf = false;
+                CancelInvoke("StopSurf");
+            }
+            IsRoof(normal);
+        }
+        float stop_time = 3f;
+        if (!cancellingGrounded)
+        {
+            cancellingGrounded = true;
+            Invoke("StopGrounded", Time.deltaTime * stop_time);
+        }
+        if (!cancellingWall)
+        {
+            cancellingWall = true;
+            Invoke("StopWall", Time.deltaTime * stop_time);
+        }
+        if (!cancellingSurf)
+        {
+            cancellingSurf = true;
+            Invoke("StopSurf", Time.deltaTime * stop_time);
+        }
+    }
+
+    private void StopGrounded()
+    {
+        isGrounded = false;
+    }
+
+    private void StopWall()
+    {
+        isWallrunning = false;
+    }
+
+    private void StopSurf()
+    {
+        isSurfing = false;
+    }
+
+    /// <summary>
+    /// Launches the player towards the target position using trajectoryHeight
+    /// </summary>
+    /// <param name="targetPosition"> Vector3 - the grapple point </param>
+    /// <param name="trajectoryHeight"> float - calculated trajectory arc betweem the players current position and target position </param>
+    public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+    {
+        isGrapple = true;
+
+        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
+
+        Invoke(nameof(ResetRestrictions), 3f);
+    }
+
+    /// <summary>
+    /// Sets the players velocity to the calculated jump velocity
+    /// </summary>
+    private void SetVelocity()
+    {
+        enableMovementOnNextTouch = true;
+        _rigidbody.velocity = velocityToSet;
+    }
+
+    private void ResetRestrictions()
+    {
+        isGrapple = false;
+    }
+
+    /// <summary>
+    /// Calculates the jump velocity of the player between the startpoint and endpoint using calculatged trajectory using a kinematic equations.
+    /// </summary>
+    /// <param name="startPoint"> Vector3 - starting position of the player </param>
+    /// <param name="endPoint"> Vector3 - grapple point the player is targeting </param>
+    /// <param name="trajectoryHeight"> float - calculated trajectory arc between the start point and end point </param>
+    /// <returns> Vector3 - calculated jump velocity </returns>
+    private Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight / gravity)
+          + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
+
+        return velocityXZ + velocityY;
+    }
 }
