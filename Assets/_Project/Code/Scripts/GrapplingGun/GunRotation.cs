@@ -19,15 +19,14 @@ public class GunRotation : MonoBehaviour
 
     private void Update()
     {
-        if (!grapple.IsGrappling())
-        {
-            desiredRotation = transform.parent.rotation;
-        }
-        else
-        {
-            desiredRotation = Quaternion.LookRotation(grapple.grapplePoint - transform.position);
-        }
+        //if (!grapple.IsGrappling())
+        //{
+        //  desiredRotation = transform.parent.rotation;
+        //} else
+        //{
+        //  desiredRotation = Quaternion.LookRotation(grapple.grapplePoint - transform.position);
+        //}
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * rotationSpeed);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * rotationSpeed);
     }
 }
