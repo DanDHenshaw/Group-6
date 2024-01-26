@@ -369,7 +369,9 @@ GameObject:
   - component: {fileID: 2741682083991529642}
   - component: {fileID: 2165417353424794646}
   - component: {fileID: 4145555679186147589}
-  - component: {fileID: 6509681782703513448}
+  - component: {fileID: 1012645254817041400}
+  - component: {fileID: 1290056978383385383}
+  - component: {fileID: 6993251447609632726}
   - component: {fileID: 1993838890764650230}
   m_Layer: 0
   m_Name: Grapple_Gun
@@ -444,7 +446,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6509681782703513448
+--- !u!114 &1012645254817041400
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -453,26 +455,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 4096798427990975682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c78549c12a2dda41a85fe740e6c1fcf, type: 3}
+  m_Script: {fileID: 11500000, guid: dabbb1703f695cd48b1a1b651aa93ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 100
-  gunTip: {fileID: 4219500535202997651}
-  launchSpeed: 25
-  launchDistance: 5
-  maxJointDistance: 0.8
-  minJointDistance: 0.25
-  jointSpring: 4.5
-  jointDamper: 7
-  jointMassScale: 4.5
+  maxDistance: 50
+  muzzle: {fileID: 4219500535202997651}
+  predictionSphereCastRadius: 1.5
+  predictionPointObject: {fileID: 5818508211055132213, guid: 5577d47f0455db94fa728c9527956f4d, type: 3}
+  grapple:
+    delayTime: 0.1
+    cooldown: 2.5
+    cooldownTimer: 0
+    isGrappling: 0
+    overShootYAxis: 20
+  swing:
+    jointMaxDistance: 0.8
+    jointMinDistance: 0.25
+    jointSpring: 4.5
+    jointDamper: 7
+    jointMassScale: 4.5
+    joint: {fileID: 0}
+    isSwinging: 0
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 256
-  player: {fileID: 0}
-  input: {fileID: 0}
-  camera: {fileID: 0}
-  playerRigidbody: {fileID: 0}
+    m_Bits: 4294967295
+  playerController: {fileID: 0}
+  input: {fileID: 11400000, guid: 599fb45ac6a29854da8485161e10e3b4, type: 2}
+  cam: {fileID: 0}
   lineRenderer: {fileID: 0}
+--- !u!114 &1290056978383385383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4096798427990975682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4726f84b040f1ca48918b70417056b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 5
+  grapple: {fileID: 1012645254817041400}
+--- !u!114 &6993251447609632726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4096798427990975682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4726f84b040f1ca48918b70417056b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 5
+  grapple: {fileID: 0}
 --- !u!120 &1993838890764650230
 LineRenderer:
   serializedVersion: 2
@@ -601,7 +639,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8852554981452501181}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
