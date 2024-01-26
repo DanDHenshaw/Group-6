@@ -177,8 +177,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   input: {fileID: 11400000, guid: 599fb45ac6a29854da8485161e10e3b4, type: 2}
-  _rigidbody: {fileID: 0}
-  _collider: {fileID: 0}
+  _rigidbody: {fileID: 7408310704723289698}
   orientation: {fileID: 2887849591459995994}
   cinemachineCam: {fileID: 0}
 --- !u!136 &4427322032157999694
