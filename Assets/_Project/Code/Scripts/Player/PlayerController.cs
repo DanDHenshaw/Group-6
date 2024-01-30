@@ -469,6 +469,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionStay(Collision other)
     {
         int layer = other.gameObject.layer;
+        Debug.Log(layer);
         if ((int)whatIsGround != ((int)whatIsGround | (1 << layer)))
         {
             return;
@@ -487,7 +488,7 @@ public class PlayerController : MonoBehaviour
                 cancellingGrounded = false;
                 CancelInvoke("StopGrounded");
             }
-            if (IsWall(normal) && layer == LayerMask.NameToLayer("Ground"))
+            if (IsWall(normal) && layer == whatIsWallrunnable)
             {
                 StartWallRun(normal);
                 cancellingWall = false;

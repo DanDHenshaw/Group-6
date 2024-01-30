@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 652091087803760064}
   - component: {fileID: 638071780221621091}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Cinemachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,12 +462,14 @@ MonoBehaviour:
   muzzle: {fileID: 4219500535202997651}
   predictionSphereCastRadius: 1.5
   predictionPointObject: {fileID: 5818508211055132213, guid: 5577d47f0455db94fa728c9527956f4d, type: 3}
+  movingObject: {fileID: 0}
+  movingObjectTag: MovingObject
   grapple:
     delayTime: 0.1
     cooldown: 2.5
     cooldownTimer: 0
     isGrappling: 0
-    overShootYAxis: 20
+    overShootYAxis: 2
   swing:
     jointMaxDistance: 0.8
     jointMinDistance: 0.25
@@ -478,9 +480,9 @@ MonoBehaviour:
     isSwinging: 0
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 256
   playerController: {fileID: 0}
-  input: {fileID: 11400000, guid: 599fb45ac6a29854da8485161e10e3b4, type: 2}
+  input: {fileID: 0}
   cam: {fileID: 0}
   lineRenderer: {fileID: 0}
 --- !u!114 &1290056978383385383
