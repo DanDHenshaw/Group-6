@@ -175,9 +175,9 @@ MonoBehaviour:
     m_Bits: 256
   whatIsWallrunnable:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 64
   input: {fileID: 11400000, guid: 599fb45ac6a29854da8485161e10e3b4, type: 2}
-  _rigidbody: {fileID: 7408310704723289698}
+  _rigidbody: {fileID: 0}
   orientation: {fileID: 2887849591459995994}
   cinemachineCam: {fileID: 0}
 --- !u!136 &4427322032157999694
@@ -229,4 +229,4 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
