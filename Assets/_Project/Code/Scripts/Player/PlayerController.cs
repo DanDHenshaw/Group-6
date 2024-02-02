@@ -469,14 +469,17 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionStay(Collision other)
     {
         int layer = other.gameObject.layer;
-        Debug.Log(layer);
-        if ((int)whatIsGround != ((int)whatIsGround | (1 << layer)))
+        bool isWallrunLayer = (int)whatIsWallrunnable == ((int)whatIsWallrunnable | (1 << layer));
+
+        if ((int)whatIsGround != ((int)whatIsGround | (1 << layer)) && !isWallrunLayer)
         {
             return;
         }
         for (int i = 0; i < other.contactCount; i++)
         {
             Vector3 normal = other.contacts[i].normal;
+
+
             if (IsFloor(normal))
             {
                 if (isWallrunning)
@@ -488,7 +491,7 @@ public class PlayerController : MonoBehaviour
                 cancellingGrounded = false;
                 CancelInvoke("StopGrounded");
             }
-            if (IsWall(normal) && layer == whatIsWallrunnable)
+            if (IsWall(normal) && isWallrunLayer)
             {
                 StartWallRun(normal);
                 cancellingWall = false;
