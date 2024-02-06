@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5150923748733633208}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: big arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,13 +92,47 @@ PrefabInstance:
       propertyPath: m_Name
       value: Big_Arch
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1d89cc14f09dd7d479521edc09f6719e, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d89cc14f09dd7d479521edc09f6719e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9218481125860814268}
   m_SourcePrefab: {fileID: 100100000, guid: 1d89cc14f09dd7d479521edc09f6719e, type: 3}
 --- !u!4 &1301821131109886822 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1d89cc14f09dd7d479521edc09f6719e, type: 3}
   m_PrefabInstance: {fileID: 1556633684169952397}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1827106607626367452 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d89cc14f09dd7d479521edc09f6719e, type: 3}
+  m_PrefabInstance: {fileID: 1556633684169952397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &9218481125860814268
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827106607626367452}
+  m_Material: {fileID: 13400000, guid: 6c341778b91944642bb3e862a28f8608, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -944138755591807168, guid: 1d89cc14f09dd7d479521edc09f6719e, type: 3}
