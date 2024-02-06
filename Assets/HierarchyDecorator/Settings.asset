@@ -942,6 +942,17 @@ MonoBehaviour:
         isBuiltIn: 1
         script: {fileID: 0}
         hash: -1
+      - displayName: FbxPrefab
+        name: UnityEngine.Formats.Fbx.Exporter.FbxPrefab, Unity.Formats.Fbx.Runtime,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        shown: 0
+        isBuiltIn: 1
+        script: {fileID: 0}
+        hash: -1
       - displayName: FlareLayer
         name: UnityEngine.FlareLayer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
           PublicKeyToken=null
@@ -4490,6 +4501,17 @@ MonoBehaviour:
         isBuiltIn: 1
         script: {fileID: 0}
         hash: -1
+      - displayName: FbxPrefab
+        name: UnityEngine.Formats.Fbx.Exporter.FbxPrefab, Unity.Formats.Fbx.Runtime,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        shown: 0
+        isBuiltIn: 1
+        script: {fileID: 0}
+        hash: -1
       - displayName: FrictionJoint2D
         name: UnityEngine.FrictionJoint2D, UnityEngine.Physics2DModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -5745,4 +5767,4 @@ MonoBehaviour:
         script: {fileID: 0}
         hash: -1
     unityVersion: 2022.2.20f1
-    unityCount: 247
+    unityCount: 248
