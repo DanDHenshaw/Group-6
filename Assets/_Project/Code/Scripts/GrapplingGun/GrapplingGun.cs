@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using Utilities;
 
 public class GrapplingGun : MonoBehaviour
 {
@@ -38,14 +38,16 @@ public class GrapplingGun : MonoBehaviour
 
   private void Awake()
   {
-      input = playerController.Input;
+    input = playerController.Input;
 
-      playerController.grapplingGun = this;
+    playerController.grapplingGun = this;
 
-      cam = Camera.main.transform;
+    cam = Camera.main.transform;
 
-      lineRenderer = GetComponent<LineRenderer>();
-      lineRenderer.enabled = false;
+    lineRenderer = GetComponent<LineRenderer>();
+    lineRenderer.enabled = false;
+
+    grapple.cooldownTimer = new CountdownTimer(grapple.cooldown);
   }
 
   private void OnEnable()
@@ -68,10 +70,9 @@ public class GrapplingGun : MonoBehaviour
 
   private void Update()
   {
-      if (grapple.cooldownTimer > 0)
-          grapple.cooldownTimer -= Time.deltaTime;
+    grapple.cooldownTimer.Tick(Time.deltaTime);
 
-      CheckForSwingPoints();
+    CheckForSwingPoints();
 
     if(isMoving && movingObject != null)
     {
@@ -125,7 +126,10 @@ public class GrapplingGun : MonoBehaviour
   /// </summary>
   private void StartGrapple()
   {
-    if (grapple.cooldownTimer > 0) return;
+    if (!grapple.cooldownTimer.IsFinished) return;
+
+    grapple.cooldownTimer.Reset();
+    grapple.cooldownTimer.Start();
 
     grapple.isGrappling = true;
 
@@ -186,8 +190,6 @@ public class GrapplingGun : MonoBehaviour
       grapple.isGrappling = false;
 
       playerController.freeze = false;
-
-      grapple.cooldownTimer = grapple.cooldown;
 
       lineRenderer.enabled = false;
   }
@@ -292,7 +294,7 @@ public class Grapple
   [Space(10)]
 
   public float cooldown;
-  [HideInInspector] public float cooldownTimer;
+  [HideInInspector] public CountdownTimer cooldownTimer;
 
   [Space(10)]
 
