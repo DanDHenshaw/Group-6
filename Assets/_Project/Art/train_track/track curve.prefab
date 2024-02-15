@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8175894785339760241}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: track curve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,12 +92,50 @@ PrefabInstance:
       propertyPath: m_Name
       value: Train_Track_Curve_Low
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070312630353837672, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 6041775168606842405, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7070312630353837672, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2056874606174966030}
   m_SourcePrefab: {fileID: 100100000, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
+--- !u!1 &2469452232154136912 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7070312630353837672, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
+  m_PrefabInstance: {fileID: 4637452352413335352}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &2056874606174966030
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469452232154136912}
+  m_Material: {fileID: 13400000, guid: 6c341778b91944642bb3e862a28f8608, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1799343959204867976, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
 --- !u!4 &5174973682423437523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27d1c22b6187b9549838d0eb6ae8f635, type: 3}
