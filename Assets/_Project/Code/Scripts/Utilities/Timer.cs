@@ -6,7 +6,7 @@ namespace Utilities
   {
     protected float initialTime;
     protected float Time { get; set; }
-    protected bool IsRunning { get; set; }
+    public bool IsRunning { get; private set; }
 
     public float Progress => Time / initialTime;
 

@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 7408310704723289698}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Bits: 256
   whatIsWallrunnable:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   input: {fileID: 11400000, guid: 599fb45ac6a29854da8485161e10e3b4, type: 2}
   _rigidbody: {fileID: 0}
   orientation: {fileID: 2887849591459995994}
