@@ -19,9 +19,9 @@ public class GunRotation : MonoBehaviour
 
 	private void Update()
 	{ 
-	  if (grapple.grapple.isGrappling || grapple.swing.isSwinging)
+	  if (grapple.IsSwinging)
 	  {
-		  desiredRotation = Quaternion.LookRotation(grapple.grapplePoint - transform.position);
+		  desiredRotation = Quaternion.LookRotation(grapple.swingPoint - transform.position);
 	  }
 	  else
 	  {
