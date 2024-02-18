@@ -154,7 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c8c7243fdb4c3340b8347bd54eaf660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 5
+  wanderRadius: 10
+  attackRadius: 5
   agent: {fileID: 0}
   animator: {fileID: 0}
   playerDetector: {fileID: 0}
