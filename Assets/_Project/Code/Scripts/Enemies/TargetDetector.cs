@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using Utilities;
 
-public class PlayerDetector : MonoBehaviour
+public class TargetDetector : MonoBehaviour
 {
   [Header("Config")]
   [SerializeField] float detectionAngle = 60f; // Cone in front of enemy
   [SerializeField] float detectionRadius = 10f; // Cone distance from enemy
   [SerializeField] float innerDetectionRadius = 5f; // Small circle around enemy
   [SerializeField] float detectionCooldown = 1f; // Time between detection
+
+  [HideInInspector] public float attackRange = 2f;
 
   public Transform Target { get; private set; }
 
@@ -24,9 +26,15 @@ public class PlayerDetector : MonoBehaviour
 
   private void Update() => detectionTimer.Tick(Time.deltaTime);
 
-  public bool CanDetectPlayer()
+  public bool CanDetectTarget()
   {
     return detectionTimer.IsRunning || detectionStrategy.Execute(Target, transform, detectionTimer);
+  }
+
+  public bool CanAttackTarget()
+  {
+    var directionToTarget = Target.position - transform.position;
+    return directionToTarget.magnitude <= attackRange;
   }
 
   public void SetDetectionStrategy(IDetectionStrategy detectionStrategy) => this.detectionStrategy = detectionStrategy;

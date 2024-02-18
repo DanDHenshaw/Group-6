@@ -16,7 +16,6 @@ public class EnemyWanderState : EnemyBaseState
 
   public override void OnEnter()
   {
-    Debug.Log("Wander");
     //animator.CrossFade(WalkHash, crossFadeDuration);
   }
 

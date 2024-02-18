@@ -1,42 +1,56 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Utilities;
 
 [RequireComponent (typeof(NavMeshAgent))]
-[RequireComponent (typeof(PlayerDetector))]
+[RequireComponent (typeof(TargetDetector))]
 public partial class EnemyController : Entity
 {
-  [Header("Config")]
+  [Header("AI Config")]
   [SerializeField] float wanderRadius = 10f;
-  [SerializeField] float attackRadius = 5f;
+
+  [Header("Combat Config")] 
+  [SerializeField] int damage = 10;
+  [SerializeField] float attackRange = 2f;
+  [SerializeField] float timeBetweenAttacks = 1f;
+
+  public int Damage => damage;
 
   [Header("References")]
   [SerializeField] NavMeshAgent agent;
   [SerializeField] Animator animator;
-  [SerializeField] PlayerDetector playerDetector;
+  [SerializeField] TargetDetector targetDetector;
+  [SerializeField] HealthSystem targetHealthSystem;
 
   StateMachine stateMachine;
+
+  CountdownTimer attackTimer;
 
   private void Awake()
   {
     agent = GetComponent<NavMeshAgent>();
     //animator = GetComponent<Animator>();
-    playerDetector = GetComponent<PlayerDetector>();
+    targetDetector = GetComponent<TargetDetector>();
   }
 
   private void Start()
   {
     stateMachine = new StateMachine();
 
-    var wanderState = new EnemyWanderState(this, agent, wanderRadius);
-    var chaseState = new EnemyChaseState(this, agent, playerDetector.Target);
-    var attackState = new EnemyAttackState(this, agent, playerDetector.Target, attackRadius);
+    attackTimer = new CountdownTimer(timeBetweenAttacks);
 
-    At(wanderState, chaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
-    At(chaseState, wanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
-    At(chaseState, attackState, new FuncPredicate(() => 
-      Vector3.Distance(transform.position, playerDetector.Target.position) < attackRadius));
-    At(attackState, chaseState, new FuncPredicate(() =>
-      Vector3.Distance(transform.position, playerDetector.Target.position) > attackRadius));
+    targetHealthSystem = targetDetector.Target.GetComponent<HealthSystem>();
+    targetDetector.attackRange = attackRange;
+
+    var wanderState = new EnemyWanderState(this, agent, wanderRadius);
+    var chaseState = new EnemyChaseState(this, agent, targetDetector.Target);
+    var attackState = new EnemyAttackState(this, agent, targetDetector.Target);
+
+    At(wanderState, chaseState, new FuncPredicate(() => targetDetector.CanDetectTarget()));
+    At(chaseState, wanderState, new FuncPredicate(() => !targetDetector.CanDetectTarget()));
+    At(chaseState, attackState, new FuncPredicate(() => targetDetector.CanAttackTarget()));
+    At(attackState, chaseState, new FuncPredicate(() => !targetDetector.CanAttackTarget()));
+
 
     stateMachine.SetState(wanderState);
   }
@@ -52,5 +66,16 @@ public partial class EnemyController : Entity
   private void FixedUpdate()
   {
     stateMachine.FixedUpdate();
+
+    attackTimer.Tick(Time.deltaTime);
+  }
+
+  public void Attack()
+  {
+    if(attackTimer.IsRunning) return;
+
+    attackTimer.Start();
+
+    targetHealthSystem.TakeDamage(damage);
   }
 }
