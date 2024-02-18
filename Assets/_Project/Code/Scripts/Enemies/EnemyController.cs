@@ -7,6 +7,7 @@ public partial class EnemyController : Entity
 {
   [Header("Config")]
   [SerializeField] float wanderRadius = 10f;
+  [SerializeField] float attackRadius = 5f;
 
   [Header("References")]
   [SerializeField] NavMeshAgent agent;
@@ -28,9 +29,14 @@ public partial class EnemyController : Entity
 
     var wanderState = new EnemyWanderState(this, agent, wanderRadius);
     var chaseState = new EnemyChaseState(this, agent, playerDetector.Target);
+    var attackState = new EnemyAttackState(this, agent, playerDetector.Target, attackRadius);
 
     At(wanderState, chaseState, new FuncPredicate(() => playerDetector.CanDetectPlayer()));
     At(chaseState, wanderState, new FuncPredicate(() => !playerDetector.CanDetectPlayer()));
+    At(chaseState, attackState, new FuncPredicate(() => 
+      Vector3.Distance(transform.position, playerDetector.Target.position) < attackRadius));
+    At(attackState, chaseState, new FuncPredicate(() =>
+      Vector3.Distance(transform.position, playerDetector.Target.position) > attackRadius));
 
     stateMachine.SetState(wanderState);
   }
