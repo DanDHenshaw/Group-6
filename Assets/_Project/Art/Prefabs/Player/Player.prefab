@@ -99,7 +99,7 @@ Transform:
   - {fileID: 2887849591459995994}
   - {fileID: 4315863998797039415}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &499751364126361373
 MeshFilter:
@@ -116,8 +116,8 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8030812068838391319}
-  m_Enabled: 1
-  m_CastShadows: 1
+  m_Enabled: 0
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -173,10 +173,10 @@ MonoBehaviour:
   slideSlowdown: 0.2
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 512
   whatIsWallrunnable:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   input: {fileID: 11400000, guid: 599fb45ac6a29854da8485161e10e3b4, type: 2}
   _rigidbody: {fileID: 0}
   orientation: {fileID: 2887849591459995994}
@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  healthChannel: {fileID: 11400000, guid: 8f0bc027f1bcc994eb686b0a4c261866, type: 2}
 --- !u!136 &4427322032157999694
 CapsuleCollider:
   m_ObjectHideFlags: 0

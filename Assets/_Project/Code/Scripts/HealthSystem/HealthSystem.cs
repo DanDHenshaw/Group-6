@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class HealthSystem : MonoBehaviour
 {
   [Header("Config")]
   [SerializeField] int maxHealth = 100;
+  [SerializeField] private FloatEventChannel healthChannel;
 
-  public event UnityAction<int> OnHealthChanged = delegate { };
+  public bool IsDead => Health <= 0;
 
   public int Health { get; private set; }
 
@@ -15,21 +15,31 @@ public class HealthSystem : MonoBehaviour
     Health = maxHealth;
   }
 
+  private void Start()
+  {
+    PublishHealthPercentage();
+  }
+
   public void TakeDamage(int damage)
   {
     Health = Mathf.Max(0, Health - damage);
-    OnHealthChanged?.Invoke(Health);
+    PublishHealthPercentage();
   }
 
   public void Heal(int amount)
   {
     Health = Mathf.Min(maxHealth, Health + amount);
-    OnHealthChanged?.Invoke(Health);
+    PublishHealthPercentage();
   }
 
   public void SetHealth(int health)
   {
     Health = Mathf.Clamp(health, 0, maxHealth);
-    OnHealthChanged?.Invoke(Health);
+    PublishHealthPercentage();
+  }
+
+  private void PublishHealthPercentage()
+  {
+    healthChannel?.Invoke(Health / (float)maxHealth);
   }
 }

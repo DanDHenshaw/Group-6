@@ -4,7 +4,7 @@ using Utilities;
 
 [RequireComponent (typeof(NavMeshAgent))]
 [RequireComponent (typeof(TargetDetector))]
-public partial class EnemyController : Entity
+public class EnemyController : Entity
 {
   [Header("AI Config")]
   [SerializeField] float wanderRadius = 10f;
@@ -20,7 +20,6 @@ public partial class EnemyController : Entity
   [SerializeField] NavMeshAgent agent;
   [SerializeField] Animator animator;
   [SerializeField] TargetDetector targetDetector;
-  [SerializeField] HealthSystem targetHealthSystem;
 
   StateMachine stateMachine;
 
@@ -39,7 +38,6 @@ public partial class EnemyController : Entity
 
     attackTimer = new CountdownTimer(timeBetweenAttacks);
 
-    targetHealthSystem = targetDetector.Target.GetComponent<HealthSystem>();
     targetDetector.attackRange = attackRange;
 
     var wanderState = new EnemyWanderState(this, agent, wanderRadius);
@@ -76,6 +74,6 @@ public partial class EnemyController : Entity
 
     attackTimer.Start();
 
-    targetHealthSystem.TakeDamage(damage);
+    targetDetector.Target.GetComponent<HealthSystem>().TakeDamage(damage);
   }
 }

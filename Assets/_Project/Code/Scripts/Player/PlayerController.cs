@@ -91,10 +91,7 @@ public class PlayerController : MonoBehaviour
       input.Look -= OnLook;
   }
 
-  private void Awake()
-  {
-      _rigidbody = GetComponent<Rigidbody>();
-  }
+  private void Awake() => _rigidbody = GetComponent<Rigidbody>();
 
   private void Start()
   {
