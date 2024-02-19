@@ -14,7 +14,7 @@ public class EnemyChaseState : EnemyBaseState
 
   public override void OnEnter()
   {
-    //animator.CrossFade(RunHash, crossFadeDuration);
+    animator.CrossFade(RunHash, crossFadeDuration);
   }
 
   public override void Update()
@@ -36,12 +36,13 @@ public class EnemyAttackState : EnemyBaseState
 
   public override void OnEnter()
   {
-    //animator.CrossFade(AttackHash, crossFadeDuration);
+    animator.CrossFade(AttackHash, crossFadeDuration);
   }
 
   public override void Update()
   {
     agent.SetDestination(enemy.transform.position);
-    enemy.Attack();
+
+    enemy.Attack(AttackHash);
   }
 }

@@ -4,6 +4,7 @@ using Utilities;
 
 [RequireComponent (typeof(NavMeshAgent))]
 [RequireComponent (typeof(TargetDetector))]
+[RequireComponent(typeof(Animator))]
 public class EnemyController : Entity
 {
   [Header("AI Config")]
@@ -28,7 +29,7 @@ public class EnemyController : Entity
   private void Awake()
   {
     agent = GetComponent<NavMeshAgent>();
-    //animator = GetComponent<Animator>();
+    animator = GetComponent<Animator>();
     targetDetector = GetComponent<TargetDetector>();
   }
 
@@ -68,12 +69,17 @@ public class EnemyController : Entity
     attackTimer.Tick(Time.deltaTime);
   }
 
-  public void Attack()
+  public void Attack(int attackHash)
   {
     if(attackTimer.IsRunning) return;
 
     attackTimer.Start();
 
+    animator.Play(attackHash, -1, 0);
+  }
+
+  public void DamagePlayer()
+  {
     targetDetector.Target.GetComponent<HealthSystem>().TakeDamage(damage);
   }
 }
