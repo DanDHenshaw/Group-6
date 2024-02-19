@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2531713287822935292}
   m_Layer: 8
   m_Name: bouncy ball
-  m_TagString: Untagged
+  m_TagString: MovingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 4606182581783033837}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4064159851775365126
 PrefabInstance:
@@ -95,6 +95,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9417d2c20d847fc4581b94d85e4079ac, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9417d2c20d847fc4581b94d85e4079ac, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

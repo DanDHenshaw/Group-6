@@ -13713,6 +13713,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3794179382826020183, guid: a7f278c78a5442b4c8614518a8243dfb, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 4271124577463515604, guid: a7f278c78a5442b4c8614518a8243dfb, type: 3}
       propertyPath: m_CollisionDetection
       value: 1
@@ -15969,7 +15973,7 @@ GameObject:
   - component: {fileID: 240394627}
   m_Layer: 8
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: MovingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21192,7 +21196,7 @@ GameObject:
   - component: {fileID: 378938109}
   m_Layer: 8
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: MovingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22939,6 +22943,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: falling g (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 554759807751762804, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 7236793059492832557, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -22998,6 +23006,10 @@ PrefabInstance:
     - target: {fileID: 7236793059492832557, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641346344018951356, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27758,6 +27770,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: falling r
       objectReference: {fileID: 0}
+    - target: {fileID: 554759807751762804, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 7236793059492832557, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -27817,6 +27833,10 @@ PrefabInstance:
     - target: {fileID: 7236793059492832557, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641346344018951356, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -30256,7 +30276,7 @@ GameObject:
   - component: {fileID: 647063944}
   m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: MovingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40925,6 +40945,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: falling b (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 554759807751762804, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 7236793059492832557, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -40984,6 +41008,10 @@ PrefabInstance:
     - target: {fileID: 7236793059492832557, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641346344018951356, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -56283,6 +56311,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: falling b
       objectReference: {fileID: 0}
+    - target: {fileID: 554759807751762804, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 7236793059492832557, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -56342,6 +56374,10 @@ PrefabInstance:
     - target: {fileID: 7236793059492832557, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641346344018951356, guid: 81fbf2f5d81d8f94d81b39803b0e61a0, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -83428,6 +83464,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: falling r (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 554759807751762804, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 7236793059492832557, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -83487,6 +83527,10 @@ PrefabInstance:
     - target: {fileID: 7236793059492832557, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641346344018951356, guid: 7dee19eabf301ad41b0e4ed673bf0565, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -91290,6 +91334,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: falling g
       objectReference: {fileID: 0}
+    - target: {fileID: 554759807751762804, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
+      objectReference: {fileID: 0}
     - target: {fileID: 7236793059492832557, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -91349,6 +91397,10 @@ PrefabInstance:
     - target: {fileID: 7236793059492832557, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641346344018951356, guid: 248b6c805302edc46837ff98611d7f78, type: 3}
+      propertyPath: m_TagString
+      value: MovingObject
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -102014,7 +102066,7 @@ GameObject:
   - component: {fileID: 2140000839}
   m_Layer: 8
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: MovingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
