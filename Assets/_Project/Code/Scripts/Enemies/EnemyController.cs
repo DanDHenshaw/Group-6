@@ -48,7 +48,7 @@ public class EnemyController : Entity
     At(wanderState, chaseState, new FuncPredicate(() => targetDetector.CanDetectTarget()));
     At(chaseState, wanderState, new FuncPredicate(() => !targetDetector.CanDetectTarget()));
     At(chaseState, attackState, new FuncPredicate(() => targetDetector.CanAttackTarget()));
-    At(attackState, chaseState, new FuncPredicate(() => !targetDetector.CanAttackTarget()));
+    At(attackState, chaseState, new FuncPredicate(() => !targetDetector.InAttackTargetRange()));
 
 
     stateMachine.SetState(wanderState);
@@ -75,7 +75,7 @@ public class EnemyController : Entity
 
     attackTimer.Start();
 
-    animator.Play(attackHash, -1, 0);
+    animator.Play(attackHash, -1, 0f);
   }
 
   public void DamagePlayer()

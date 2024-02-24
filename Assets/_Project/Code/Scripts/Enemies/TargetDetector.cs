@@ -37,5 +37,11 @@ public class TargetDetector : MonoBehaviour
     return directionToTarget.magnitude <= attackRange;
   }
 
+  public bool InAttackTargetRange()
+  {
+    var directionToTarget = Target.position - transform.position;
+    return directionToTarget.magnitude <= attackRange + 0.5f;
+  }
+
   public void SetDetectionStrategy(IDetectionStrategy detectionStrategy) => this.detectionStrategy = detectionStrategy;
 }
