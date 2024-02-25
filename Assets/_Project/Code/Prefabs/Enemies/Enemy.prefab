@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2049737359300184109}
   - component: {fileID: 9113700896909828238}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Back
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 3656700474653981150}
   - component: {fileID: 2029721289167339887}
   - component: {fileID: 4940774583128516957}
+  - component: {fileID: 7736343571587799262}
   - component: {fileID: 6724924573651972843}
   - component: {fileID: 206676657286074330}
   m_Layer: 0
@@ -121,7 +122,7 @@ Transform:
   - {fileID: 959436081960230173}
   - {fileID: 5566269548863196876}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2029721289167339887
 MonoBehaviour:
@@ -159,6 +160,20 @@ MonoBehaviour:
   innerDetectionRadius: 5
   detectionCooldown: 1
   attackRange: 2
+--- !u!114 &7736343571587799262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3210404448515065023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c01b1a17d4b3d3448ae32c9048e325d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  healthChannel: {fileID: 0}
 --- !u!95 &6724924573651972843
 Animator:
   serializedVersion: 5
@@ -212,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 46050808324980743}
   - component: {fileID: 7915498826930562409}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Front
   m_TagString: Enemy
   m_Icon: {fileID: 0}

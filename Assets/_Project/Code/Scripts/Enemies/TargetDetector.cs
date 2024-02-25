@@ -17,7 +17,7 @@ public class TargetDetector : MonoBehaviour
 
   IDetectionStrategy detectionStrategy;
 
-  private void Start()
+  private void Awake()
   {
     detectionTimer = new CountdownTimer(detectionCooldown);
     Target = GameObject.FindGameObjectWithTag("Player").transform;
