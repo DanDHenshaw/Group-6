@@ -1,11 +1,12 @@
 using UnityEngine;
-using Utilities;
 
 public class EnemySpawnManager : EntitySpawnManager
 {
   [SerializeField] EnemyData[] enemyData;
 
   [SerializeField] WaveEntitySpawner<EnemyController> spawner;
+
+  private bool canSpawn = false;
 
   protected override void Awake()
   {
@@ -18,9 +19,19 @@ public class EnemySpawnManager : EntitySpawnManager
 
   private void Update()
   {
+    if (!canSpawn) return;
+
     spawner.Update(Time.deltaTime);
     Spawn();
   }
 
   public override void Spawn() => spawner.UpdateWaves();
+
+  private void OnTriggerEnter(Collider c)
+  {
+    if (c.CompareTag("Player"))
+    {
+      canSpawn = true;
+    }
+  }
 }

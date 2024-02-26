@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 908825956877449537}
   - component: {fileID: 2107198320907265202}
-  - component: {fileID: 2855959014314113309}
+  - component: {fileID: 1300852320080883533}
   m_Layer: 0
   m_Name: SpawnManager
   m_TagString: Untagged
@@ -53,41 +53,34 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5baedf7521c62004fa3d0143244b2ec8, type: 2}
   spawner:
     waves:
-    - name: 1
+    - name: test
       enemiesToSpawn: 1
       enemySpawnRate: 1
-    timeBetweenWaves: 1
+    timeBetweenWaves: 5
     searchCountdownTime: 1
-    waveInitialisedEventChannel: {fileID: 0}
+    waveInitialisedEventChannel: {fileID: 11400000, guid: db0577150feaf6b438bcc3cca0563fc3, type: 2}
     wavesCompleteEventChannel: {fileID: 11400000, guid: 6d1dbb39a126b9948bef83f13ffb4c35, type: 2}
---- !u!114 &2855959014314113309
-MonoBehaviour:
+--- !u!135 &1300852320080883533
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518257396468112694}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869b04464ab2d16459647770d4d39994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventChannel: {fileID: 11400000, guid: 6d1dbb39a126b9948bef83f13ffb4c35, type: 2}
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1518257396468112694}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  serializedVersion: 3
+  m_Radius: 16.999302
+  m_Center: {x: 0.3123722, y: 0, z: 0.5725899}
 --- !u!1 &2633274178641580685
 GameObject:
   m_ObjectHideFlags: 0

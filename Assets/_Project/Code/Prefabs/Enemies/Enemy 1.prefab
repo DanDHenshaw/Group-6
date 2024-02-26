@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 206676657286074330}
   - component: {fileID: 1727903385972986427}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,10 +138,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wanderRadius: 10
+  stillThreshold: 0.05
   damage: 10
   attackRange: 2
   timeBetweenAttacks: 1
   agent: {fileID: 0}
+  rigidbody: {fileID: 0}
   animator: {fileID: 0}
   targetDetector: {fileID: 0}
   healthSystem: {fileID: 0}
@@ -370,11 +372,11 @@ PrefabInstance:
     - target: {fileID: -5088504269673469152, guid: fdcbd612dc2d6ab468b2313a4cf30fff, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 784bd6100131892479034134990d79d3, type: 2}
+      objectReference: {fileID: 2100000, guid: 4cc9bbabfac0a504399b8632340ac764, type: 2}
     - target: {fileID: 376468266101486734, guid: fdcbd612dc2d6ab468b2313a4cf30fff, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 784bd6100131892479034134990d79d3, type: 2}
+      objectReference: {fileID: 2100000, guid: 4cc9bbabfac0a504399b8632340ac764, type: 2}
     - target: {fileID: 919132149155446097, guid: fdcbd612dc2d6ab468b2313a4cf30fff, type: 3}
       propertyPath: m_Name
       value: Enemy_Stand_Low

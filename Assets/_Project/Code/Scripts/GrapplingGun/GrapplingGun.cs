@@ -20,6 +20,7 @@ using UnityEngine;
 
   [Header("Attack Settings")]
   [SerializeField] private int damage = 10;
+  [SerializeField] private float knockbackForce = 1000f;
   [SerializeField] private float attackTime = 0.25f;
 
   [Header("Prediction Config")]
@@ -54,6 +55,9 @@ using UnityEngine;
 
   private GameObject enemyObject = null;
   private bool isBack = false;
+  private bool isAttacking = false;
+
+  private Vector3 hitDirection = Vector3.zero;
 
   private void Awake()
   {
@@ -104,7 +108,7 @@ using UnityEngine;
 
   private void LateUpdate()
   {
-      if (IsSwinging && enemyObject != null)
+      if (IsSwinging || isAttacking)
       {
           lineRenderer.SetPosition(0, muzzle.position);
       }
@@ -217,15 +221,20 @@ using UnityEngine;
   {
     if (isBack)
     {
-      enemyObject.GetComponentInParent<HealthSystem>().TakeDamage(damage);
+      enemyObject.GetComponent<HealthSystem>().TakeDamage(damage);
     } 
     else
     {
-      Debug.Log("Add Knockback");
+      if(enemyObject.TryGetComponent(out IKnockbackable knockbackable))
+      {
+        Vector3 force = knockbackForce * hitDirection;
+        knockbackable.GetKnockedBack(force);
+      }
     }
 
+    isAttacking = true;
+
     lineRenderer.enabled = true;
-    lineRenderer.SetPosition(0, muzzle.position);
     lineRenderer.SetPosition(1, predictionHit.point);
 
     Invoke("OnStopAttack", attackTime);
@@ -233,6 +242,7 @@ using UnityEngine;
 
   private void OnStopAttack()
   {
+    isAttacking = false;
     lineRenderer.enabled = false;
   }
 
@@ -259,7 +269,7 @@ using UnityEngine;
     {
       GameObject enemy = raycastHitEnemy.collider.gameObject;
 
-      enemyObject = enemy;
+      enemyObject = enemy.GetComponentInParent<EnemyController>().gameObject;
 
       if(enemy.name.ToLower() == "front")
       {
@@ -267,6 +277,7 @@ using UnityEngine;
       } else if (enemy.name.ToLower() == "back")
       {
         isBack = true;
+        hitDirection = -raycastHitEnemy.normal;
       }
     } 
     else

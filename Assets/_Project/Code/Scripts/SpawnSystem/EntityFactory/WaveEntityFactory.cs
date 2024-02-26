@@ -69,7 +69,7 @@ public class WaveEntitySpawner<T> where T : Entity
 
   public void Initialise()
   {
-    waveInitialisedEventChannel.Invoke(default);
+    waveInitialisedEventChannel?.Invoke(default);
 
     waveCountdown = new CountdownTimer(timeBetweenWaves);
     waveCountdown.Start();
