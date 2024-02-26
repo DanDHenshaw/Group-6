@@ -12,6 +12,7 @@ public class InputManager : ScriptableObject, IPlayerActions
   public event UnityAction<Vector2, bool> Look = delegate { };
   public event UnityAction<bool> LeftClick = delegate { };
   public event UnityAction<bool> RightClick = delegate { };
+  public event UnityAction Pause = delegate { };
 
   private Controls controls;
 
@@ -91,4 +92,14 @@ public class InputManager : ScriptableObject, IPlayerActions
         break;
     }
   }
+
+  public void OnPause(InputAction.CallbackContext context)
+  {
+	  switch (context.phase)
+	  {
+		  case InputActionPhase.Started:
+			  Pause.Invoke();
+			  break;
+	  }
+	}
 }

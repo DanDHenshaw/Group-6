@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Level/Scenes/Hud.unity
-    guid: 6fdfd5fefc4ec5d4ba827fb7344f1a86
+    path: Assets/_Project/Level/Scenes/Hud/Timer.unity
+    guid: 355a155ac574b074b912d0d002b0419e
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/WinScreen.unity
+    guid: b60e0ec778d257b46a7037b2b0f0f325
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 00fe179e865999f438c40caf787ab04b, type: 2}
