@@ -647,7 +647,7 @@ MonoBehaviour:
   movingObjectTag: MovingObject
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
   playerController: {fileID: 0}
   input: {fileID: 0}
   cam: {fileID: 0}

@@ -1,13 +1,17 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using Utilities;
 
 [RequireComponent (typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
 [RequireComponent (typeof(TargetDetector))]
-public class EnemyController : Entity
+[RequireComponent(typeof(Animator))]
+public class EnemyController : Entity, IKnockbackable
 {
   [Header("AI Config")]
   [SerializeField] float wanderRadius = 10f;
+  [SerializeField, Range(0.001f, 0.1f)] private float stillThreshold = 0.05f;
 
   [Header("Combat Config")] 
   [SerializeField] int damage = 10;
@@ -18,18 +22,24 @@ public class EnemyController : Entity
 
   [Header("References")]
   [SerializeField] NavMeshAgent agent;
+  [SerializeField] Rigidbody rigidbody;
   [SerializeField] Animator animator;
   [SerializeField] TargetDetector targetDetector;
+  [SerializeField] HealthSystem healthSystem;
 
   StateMachine stateMachine;
 
   CountdownTimer attackTimer;
 
+  bool isKnockback = false;
+
   private void Awake()
   {
     agent = GetComponent<NavMeshAgent>();
-    //animator = GetComponent<Animator>();
+    rigidbody = GetComponent<Rigidbody>();
+    animator = GetComponent<Animator>();
     targetDetector = GetComponent<TargetDetector>();
+    healthSystem = GetComponent<HealthSystem>();
   }
 
   private void Start()
@@ -43,12 +53,16 @@ public class EnemyController : Entity
     var wanderState = new EnemyWanderState(this, agent, wanderRadius);
     var chaseState = new EnemyChaseState(this, agent, targetDetector.Target);
     var attackState = new EnemyAttackState(this, agent, targetDetector.Target);
+    var deathState = new EnemyDeathState(this, agent);
+    var knockbackState = new EnemyKnockbackState(this);
 
     At(wanderState, chaseState, new FuncPredicate(() => targetDetector.CanDetectTarget()));
     At(chaseState, wanderState, new FuncPredicate(() => !targetDetector.CanDetectTarget()));
     At(chaseState, attackState, new FuncPredicate(() => targetDetector.CanAttackTarget()));
-    At(attackState, chaseState, new FuncPredicate(() => !targetDetector.CanAttackTarget()));
-
+    At(attackState, chaseState, new FuncPredicate(() => !targetDetector.InAttackTargetRange()));
+    Any(deathState, new FuncPredicate(() => healthSystem.IsDead));
+    Any(knockbackState, new FuncPredicate(() => isKnockback));
+    At(knockbackState, wanderState, new FuncPredicate(() => !isKnockback));
 
     stateMachine.SetState(wanderState);
   }
@@ -58,7 +72,11 @@ public class EnemyController : Entity
 
   private void Update()
   {
-    stateMachine.Update();
+    if(transform.position.y <= -100)
+      KillSelf();
+
+    if(agent.enabled)
+      stateMachine.Update();
   }
 
   private void FixedUpdate()
@@ -68,12 +86,47 @@ public class EnemyController : Entity
     attackTimer.Tick(Time.deltaTime);
   }
 
-  public void Attack()
+  public void Attack(int attackHash)
   {
     if(attackTimer.IsRunning) return;
 
     attackTimer.Start();
 
-    targetDetector.Target.GetComponent<HealthSystem>().TakeDamage(damage);
+    animator.Play(attackHash, -1, 0f);
+  }
+
+  public void DamagePlayer() => targetDetector.Target.GetComponent<HealthSystem>().TakeDamage(damage);
+
+  public void KillSelf() => Destroy(gameObject);
+
+  public void GetKnockedBack(Vector3 force)
+  {
+    isKnockback = true;
+
+    StartCoroutine(ApplyKnockback(force));
+  }
+
+  private IEnumerator ApplyKnockback(Vector3 force)
+  {
+    yield return null;
+    agent.enabled = false;
+    rigidbody.useGravity = true;
+    rigidbody.isKinematic = false;
+    rigidbody.AddForce(force);
+
+    yield return new WaitForFixedUpdate();
+    yield return new WaitUntil(() => rigidbody.velocity.magnitude < stillThreshold);
+    yield return new WaitForSeconds(0.25f);
+
+    rigidbody.velocity = Vector3.zero;
+    rigidbody.angularVelocity = Vector3.zero;
+    rigidbody.useGravity = false;
+    rigidbody.isKinematic = true;
+    agent.Warp(transform.position);
+    agent.enabled = true;
+
+    yield return null;
+
+    isKnockback = false;
   }
 }

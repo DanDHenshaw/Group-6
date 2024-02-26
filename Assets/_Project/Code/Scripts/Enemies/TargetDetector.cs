@@ -17,7 +17,7 @@ public class TargetDetector : MonoBehaviour
 
   IDetectionStrategy detectionStrategy;
 
-  private void Start()
+  private void Awake()
   {
     detectionTimer = new CountdownTimer(detectionCooldown);
     Target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -35,6 +35,12 @@ public class TargetDetector : MonoBehaviour
   {
     var directionToTarget = Target.position - transform.position;
     return directionToTarget.magnitude <= attackRange;
+  }
+
+  public bool InAttackTargetRange()
+  {
+    var directionToTarget = Target.position - transform.position;
+    return directionToTarget.magnitude <= attackRange + 0.5f;
   }
 
   public void SetDetectionStrategy(IDetectionStrategy detectionStrategy) => this.detectionStrategy = detectionStrategy;
