@@ -10,7 +10,7 @@ public abstract class EntitySpawnManager : MonoBehaviour
   protected enum SpawnPointStrategyType
   {
     Linear,
-    Random
+    Random,
   }
 
   protected virtual void Awake()
@@ -18,7 +18,7 @@ public abstract class EntitySpawnManager : MonoBehaviour
     spawnPointStrategy = spawnPointStrategyType switch
     {
       SpawnPointStrategyType.Linear => new LinearSpawnPointStrategy(spawnPoints),
-      SpawnPointStrategyType.Random => new LinearSpawnPointStrategy(spawnPoints),
+      SpawnPointStrategyType.Random => new RandomSpawnPointStrategy(spawnPoints),
       _ => spawnPointStrategy
     };
   }

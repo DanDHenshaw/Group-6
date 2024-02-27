@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
-using Utilities;
+  using Utilities;
 
-public class GrapplingGun : MonoBehaviour
-{ 
+  public class GrapplingGun : MonoBehaviour
+  { 
   [Header("Weapon Config")]
   [SerializeField] private float maxDistance;
   public Transform muzzle;
@@ -17,8 +18,12 @@ public class GrapplingGun : MonoBehaviour
   [Header("Shorten Config")]
   [SerializeField] private float thrustForce = 3000f;
 
+  [Header("Attack Settings")]
+  [SerializeField] private int damage = 10;
+  [SerializeField] private float knockbackForce = 1000f;
+  [SerializeField] private float attackTime = 0.25f;
+
   [Header("Prediction Config")]
-  [SerializeField] private RaycastHit predictionHit;
   [SerializeField] private float predictionSphereCastRadius;
   [SerializeField] private GameObject predictionPointObject;
 
@@ -29,6 +34,7 @@ public class GrapplingGun : MonoBehaviour
   [Space(15)]
 
   [SerializeField] private LayerMask whatIsGrappleable;
+  [SerializeField] private LayerMask whatIsEnemy;
 
   [Header("References")]
   [SerializeField] private PlayerController playerController;
@@ -37,6 +43,7 @@ public class GrapplingGun : MonoBehaviour
   [SerializeField] private LineRenderer lineRenderer;
 
   public Vector3 swingPoint { get; private set; }
+  private RaycastHit predictionHit;
   private Transform predictionPoint;
 
   private SpringJoint joint;
@@ -45,6 +52,12 @@ public class GrapplingGun : MonoBehaviour
   private bool isMoving = false;
 
   private bool isShorten = false;
+
+  private GameObject enemyObject = null;
+  private bool isBack = false;
+  private bool isAttacking = false;
+
+  private Vector3 hitDirection = Vector3.zero;
 
   private void Awake()
   {
@@ -95,9 +108,9 @@ public class GrapplingGun : MonoBehaviour
 
   private void LateUpdate()
   {
-      if (IsSwinging)
+      if (IsSwinging || isAttacking)
       {
-          lineRenderer.SetPosition(0,muzzle.position);
+          lineRenderer.SetPosition(0, muzzle.position);
       }
   }
 
@@ -139,6 +152,13 @@ public class GrapplingGun : MonoBehaviour
   /// </summary>
   private void StartSwinging()
   {
+    if(enemyObject != null)
+    {
+      HandleAttack();
+
+      return;
+    }
+
     // return if predictionHit not found
     if (predictionHit.point == Vector3.zero) return;
 
@@ -197,45 +217,106 @@ public class GrapplingGun : MonoBehaviour
     }
   }
 
+  private void HandleAttack()
+  {
+    if (isBack)
+    {
+      enemyObject.GetComponentInParent<HealthSystem>().TakeDamage(damage);
+      Destroy(enemyObject);
+    }
+    else
+    {
+      if(enemyObject.GetComponentInParent<EnemyController>().TryGetComponent(out IKnockbackable knockbackable))
+      {
+        Vector3 force = knockbackForce * hitDirection;
+        knockbackable.GetKnockedBack(force);
+      }
+    }
+
+    isAttacking = true;
+
+    lineRenderer.enabled = true;
+    lineRenderer.SetPosition(1, predictionHit.point);
+
+    Invoke("OnStopAttack", attackTime);
+  }
+
+  private void OnStopAttack()
+  {
+    isAttacking = false;
+    lineRenderer.enabled = false;
+  }
+
   /// <summary>
   /// Creates a prediction for where the player grapples/swings - if the player isnt directly aiming at a grappleable point spherecast to find the nearest grapple point
   /// </summary>
   private void CheckForSwingPoints()
   {
-      if (IsSwinging) return;
+    if (IsSwinging) return;
 
-      RaycastHit sphereCastHit;
-      Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, out sphereCastHit, maxDistance, whatIsGrappleable);
+    RaycastHit sphereCastHit;
+    Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, out sphereCastHit, maxDistance, whatIsGrappleable);
 
-      RaycastHit raycastHit;
-      Physics.Raycast(cam.position, cam.forward, out raycastHit, maxDistance, whatIsGrappleable);
+    RaycastHit raycastHit;
+    Physics.Raycast(cam.position, cam.forward, out raycastHit, maxDistance, whatIsGrappleable);
 
-      Vector3 realHitPoint;
+    RaycastHit raycastHitEnemy;
+    Physics.Raycast(cam.position, cam.forward, out raycastHitEnemy, maxDistance, whatIsEnemy);
 
-      // Option 1 - Direct Hit
-      if (raycastHit.point != Vector3.zero)
-          realHitPoint = raycastHit.point;
+    Vector3 realHitPoint;
 
-      // Option 2 - Indirect (predicted) Hit
-      else if (sphereCastHit.point != Vector3.zero)
-          realHitPoint = sphereCastHit.point;
+    // If grapple is enemy
+    if (raycastHitEnemy.point != Vector3.zero)
+    {
+      GameObject enemy = raycastHitEnemy.collider.gameObject;
 
-      // Option 3 - Miss
-      else
-          realHitPoint = Vector3.zero;
+      enemyObject = enemy;
 
-      // realHitPoint found
-      if (realHitPoint != Vector3.zero)
+      if(enemy.name.ToLower() == "front")
       {
-          predictionPoint.gameObject.SetActive(true);
-          predictionPoint.position = realHitPoint;
-      }
-      // realHitPoint not found
-      else
+        isBack = false;
+      } else if (enemy.name.ToLower() == "back")
       {
-          predictionPoint.gameObject.SetActive(false);
+        isBack = true;
+        hitDirection = -raycastHitEnemy.normal;
       }
+    } 
+    else
+    {
+      enemyObject = null;
+    }
 
-      predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
+    // Option 1 - Direct Hit Enemy
+    if (enemyObject != null)
+      realHitPoint = raycastHitEnemy.point;
+
+    // Option 2 - Direct Hit
+    else if (raycastHit.point != Vector3.zero)
+      realHitPoint = raycastHit.point;
+
+    // Option 3 - Indirect (predicted) Hit
+    else if (sphereCastHit.point != Vector3.zero)
+        realHitPoint = sphereCastHit.point;
+
+    // Option 4 - Miss
+    else
+        realHitPoint = Vector3.zero;
+
+    // realHitPoint found
+    if (realHitPoint != Vector3.zero)
+    {
+        predictionPoint.gameObject.SetActive(true);
+        predictionPoint.position = realHitPoint;
+    }
+    // realHitPoint not found
+    else
+    {
+        predictionPoint.gameObject.SetActive(false);
+    }
+
+    if(raycastHit.normal != Vector3.zero)
+      predictionPoint.rotation = Quaternion.LookRotation(raycastHit.normal);
+
+    predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
   }
 }

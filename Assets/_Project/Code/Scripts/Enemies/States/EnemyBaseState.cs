@@ -6,18 +6,18 @@ public abstract class EnemyBaseState : IState
   protected readonly EnemyController enemy;
   protected readonly Animator animator;
 
-  protected readonly int IdleHash = Animator.StringToHash("Idle");
-  protected readonly int WalkHash = Animator.StringToHash("Walk");
-  protected readonly int RunHash = Animator.StringToHash("Run");
-  protected readonly int AttackHash = Animator.StringToHash("Attack");
-  protected readonly int DeathHash = Animator.StringToHash("Death");
+  protected readonly int IdleHash = Animator.StringToHash("idle");
+  protected readonly int WalkHash = Animator.StringToHash("walk");
+  protected readonly int RunHash = Animator.StringToHash("run");
+  protected readonly int AttackHash = Animator.StringToHash("attack");
+  protected readonly int DeathHash = Animator.StringToHash("death");
 
   protected const float crossFadeDuration = 0.1f;
 
-  protected EnemyBaseState(EnemyController enemy)
+  protected EnemyBaseState(EnemyController enemy, Animator animator)
   {
     this.enemy = enemy;
-    animator = enemy.GetComponent<Animator>();
+    this.animator = animator;
   }
 
   public virtual void OnEnter()

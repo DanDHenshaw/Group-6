@@ -7,7 +7,7 @@ public class EnemyWanderState : EnemyBaseState
   private readonly Vector3 startPoint;
   private readonly float wanderRadius;
 
-  public EnemyWanderState(EnemyController enemy, NavMeshAgent agent, float wanderRadius) : base(enemy) 
+  public EnemyWanderState(EnemyController enemy, Animator animator, NavMeshAgent agent, float wanderRadius) : base(enemy, animator) 
   {
     this.agent = agent;
     this.startPoint = enemy.transform.position;
@@ -16,7 +16,7 @@ public class EnemyWanderState : EnemyBaseState
 
   public override void OnEnter()
   {
-    //animator.CrossFade(WalkHash, crossFadeDuration);
+    animator.CrossFade(WalkHash, crossFadeDuration);
   }
 
   public override void Update()
