@@ -508,34 +508,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 957493262}
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SpawnHealthDamage
-      objectReference: {fileID: 0}
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: DamageIndicator, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: unityEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5108009846172991799, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -624,14 +596,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 7246275761250521842, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
-      propertyPath: healthCanvas
-      value: 
-      objectReference: {fileID: 957493261}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 272180854077442555, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6306880340479782552, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 957493268}
   m_SourcePrefab: {fileID: 100100000, guid: e212242e56ba5f347b2c4ec228a6d416, type: 3}
 --- !u!1 &957493261 stripped
 GameObject:
@@ -649,6 +621,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be9793503ea02954fbfa892743711fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &957493268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957493261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869b04464ab2d16459647770d4d39994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventChannel: {fileID: 11400000, guid: 0c2cd27172c29ae479dc384ebad1a57f, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 957493262}
+        m_TargetAssemblyTypeName: DamageIndicator, Assembly-CSharp
+        m_MethodName: SpawnHealthDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1022767623
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,100 +964,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1100822278}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1151127325
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3210404448515065023, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_Name
-      value: Toaster
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.11
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3656700474653981150, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
---- !u!1 &1232145924 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6817860039325601586, guid: 9a1e971d7197b584abd7602527ebe9fb, type: 3}
-  m_PrefabInstance: {fileID: 2417755694888989485}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1232145928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232145924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869b04464ab2d16459647770d4d39994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventChannel: {fileID: 11400000, guid: b394f48dea51f944ab7e5d3aafa5ab90, type: 2}
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2130602604}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: WinGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1335419686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,17 +1334,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2130602604 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3666148636026526490, guid: 9a1e971d7197b584abd7602527ebe9fb, type: 3}
-  m_PrefabInstance: {fileID: 2417755694888989485}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80ef1f9ba474cc7478d9910296431fce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &828660419055242192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1451,6 +1346,14 @@ PrefabInstance:
       propertyPath: cinemachineCam
       value: 
       objectReference: {fileID: 1808285221}
+    - target: {fileID: 3762730142116715809, guid: 940b5a7ce0ce3bc448ce9cfb92b85615, type: 3}
+      propertyPath: maxHealth
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762730142116715809, guid: 940b5a7ce0ce3bc448ce9cfb92b85615, type: 3}
+      propertyPath: healthChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c2cd27172c29ae479dc384ebad1a57f, type: 2}
     - target: {fileID: 7395592003650192681, guid: 940b5a7ce0ce3bc448ce9cfb92b85615, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1563,10 +1466,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6817860039325601586, guid: 9a1e971d7197b584abd7602527ebe9fb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1232145928}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1e971d7197b584abd7602527ebe9fb, type: 3}
 --- !u!1001 &2919738172687481047
 PrefabInstance:
@@ -1735,7 +1635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1518257396468112694, guid: 6c1119210bdb8c6459491cb9ec8c32e8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2107198320907265202, guid: 6c1119210bdb8c6459491cb9ec8c32e8, type: 3}
       propertyPath: enemyData.Array.size

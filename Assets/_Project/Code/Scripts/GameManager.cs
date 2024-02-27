@@ -1,9 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
   public static GameManager instance;
+
+  [SerializeField] private Transform bossSpawn;
+  [SerializeField] private GameObject bossObject;
 
   private int spawnManagers = 0;
   private int spawnManagersComplete = 0;
@@ -28,7 +32,7 @@ public class GameManager : MonoBehaviour
 
   private void CheckIfEmemiesDefeat()
   {
-    if (!isBossSpawned) return;
+    if (isBossSpawned) return;
     if (spawnManagers == 0) return;
 
     if(spawnManagersComplete >= spawnManagers)
@@ -39,11 +43,19 @@ public class GameManager : MonoBehaviour
 
   private void SpawnBoss()
   {
-    print("Boss Spawned");
+    Debug.Log("Boss Spawned!");
+    Instantiate(bossObject, bossSpawn);
+    isBossSpawned = true;
   }
 
   public void WinGame()
   {
     Debug.Log("WinGame");
+    SceneManager.LoadScene("WinScreen");
+  }
+
+  public void LoseGame()
+  {
+    SceneManager.LoadScene("GameOver");
   }
 }
