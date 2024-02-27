@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
   public LayerMask whatIsGround;
   public LayerMask whatIsWallrunnable;
 
+  [Header("Events")]
+  [SerializeField] private EventChannel jumpEventChannel;
+
   [Header("References")]
   [SerializeField] private InputManager input;
   [SerializeField] private Rigidbody _rigidbody;
@@ -339,6 +342,7 @@ public class PlayerController : MonoBehaviour
       if ((isGrounded || isWallrunning || isSurfing) && readyToJump)
       {
           isJumping = true;
+          jumpEventChannel?.Invoke(default);
 
           Vector3 velocity = _rigidbody.velocity;
           readyToJump = false;

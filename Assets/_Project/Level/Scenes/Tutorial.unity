@@ -3250,6 +3250,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2088929268}
     - target: {fileID: 1012645254817041400, guid: fe659951b44e1ed4dbf3097043d60fb7, type: 3}
+      propertyPath: swingEventChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ca84e2040a2fac40b259a764f7751e5, type: 2}
+    - target: {fileID: 1012645254817041400, guid: fe659951b44e1ed4dbf3097043d60fb7, type: 3}
       propertyPath: whatIsEnemy.m_Bits
       value: 4096
       objectReference: {fileID: 0}

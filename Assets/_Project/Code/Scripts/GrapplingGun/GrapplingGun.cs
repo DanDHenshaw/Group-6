@@ -37,6 +37,9 @@ using Utilities;
   [SerializeField] private LayerMask whatIsGrappleable;
   [SerializeField] private LayerMask whatIsEnemy;
 
+  [Header("Events")]
+  [SerializeField] private EventChannel swingEventChannel;
+
   [Header("References")]
   [SerializeField] private PlayerController playerController;
   [SerializeField] private InputManager input;
@@ -164,6 +167,7 @@ using Utilities;
     if (predictionHit.point == Vector3.zero) return;
 
     IsSwinging = true;
+    swingEventChannel?.Invoke(default);
 
     if (predictionHit.transform.gameObject.CompareTag(movingObjectTag))
     {
@@ -240,10 +244,12 @@ using Utilities;
       }
     }
 
+    swingEventChannel?.Invoke(default);
+
     isAttacking = true;
 
     lineRenderer.enabled = true;
-    lineRenderer.SetPosition(1, predictionHit.point);
+    lineRenderer.SetPosition(1, predictionPoint.transform.position);
 
     Invoke("OnStopAttack", attackTime);
   }

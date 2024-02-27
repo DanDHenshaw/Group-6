@@ -25,6 +25,7 @@ public class EnemyController : Entity, IKnockbackable
   [SerializeField] Animator animator;
   [SerializeField] TargetDetector targetDetector;
   [SerializeField] HealthSystem healthSystem;
+  [SerializeField] AudioPlayer player = null;
 
   StateMachine stateMachine;
 
@@ -75,6 +76,9 @@ public class EnemyController : Entity, IKnockbackable
 
   private void Update()
   {
+    if(healthSystem.IsDead)
+      StopAllCoroutines();
+
     if(transform.position.y <= -100)
       KillSelf();
 
@@ -98,7 +102,10 @@ public class EnemyController : Entity, IKnockbackable
     animator.Play(attackHash, -1, 0f);
   }
 
-  public void DamagePlayer() => targetDetector.Target.GetComponent<HealthSystem>().TakeDamage(damage);
+  public void DamagePlayer()
+  {
+    targetDetector.Target.GetComponent<HealthSystem>().TakeDamage(damage);
+  }
 
   public void KillSelf() => Destroy(gameObject);
 
@@ -122,6 +129,8 @@ public class EnemyController : Entity, IKnockbackable
     rigidbody.isKinematic = false;
     rigidbody.AddForce(force);
 
+    player?.PlayDamage();
+
     yield return new WaitForFixedUpdate();
     yield return new WaitUntil(() => rigidbody.velocity.magnitude < stillThreshold);
     yield return new WaitForSeconds(0.25f);
@@ -137,4 +146,8 @@ public class EnemyController : Entity, IKnockbackable
 
     isKnockback = false;
   }
+
+  public void PlayAttack() => player?.PlayAttack();
+  public void PlayDeath() => player?.PlayDeath();
+  public void PlayChatter() => player?.PlayChatter();
 }
