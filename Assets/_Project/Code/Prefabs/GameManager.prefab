@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ef1f9ba474cc7478d9910296431fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBarSceneName: Health
+  timerSceneName: Timer
   bossSpawn: {fileID: 4448937986384780205}
   bossObject: {fileID: 3210404448515065023, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
 --- !u!1 &3021881411742483544

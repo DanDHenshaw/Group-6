@@ -102,6 +102,11 @@ public class EnemyController : Entity, IKnockbackable
 
   public void KillSelf() => Destroy(gameObject);
 
+  public void RotateMe()
+  {
+    transform.LookAt(targetDetector.Target.transform.position);
+  }
+
   public void GetKnockedBack(Vector3 force)
   {
     isKnockback = true;

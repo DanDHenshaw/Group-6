@@ -117,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 3210404448515065023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 959436081960230173}
@@ -160,8 +160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionAngle: 60
-  detectionRadius: 10
-  innerDetectionRadius: 5
+  detectionRadius: 20
+  innerDetectionRadius: 20
   detectionCooldown: 1
   attackRange: 2
 --- !u!114 &7736343571587799262
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c01b1a17d4b3d3448ae32c9048e325d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 1
   healthChannel: {fileID: 0}
 --- !u!95 &6724924573651972843
 Animator:

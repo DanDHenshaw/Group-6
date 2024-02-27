@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
 {
   public static GameManager instance;
 
+  [Header("Sub Scenes")]
+  [SerializeField] string healthBarSceneName;
+  [SerializeField] string timerSceneName;
+
+  [Header("Boss Config")]
   [SerializeField] private Transform bossSpawn;
   [SerializeField] private GameObject bossObject;
 
@@ -20,6 +25,9 @@ public class GameManager : MonoBehaviour
     {
       instance = this;
     }
+
+    SceneManager.LoadScene(healthBarSceneName, LoadSceneMode.Additive);
+    SceneManager.LoadScene(timerSceneName, LoadSceneMode.Additive);
   }
 
   private void Update()

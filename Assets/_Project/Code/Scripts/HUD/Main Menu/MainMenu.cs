@@ -5,14 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-  public void LoadScene(string sceneName)
-  {
-     SceneManager.LoadScene(sceneName);
-  }
+private void Awake()
+{
+  Cursor.lockState = CursorLockMode.Confined;
+  Cursor.visible = true;
+}
 
-  public void ExitGame()
-  {
-    Debug.Log("Game Closed");
-    Application.Quit();
-  }
+public void LoadScene(string sceneName)
+{
+  SceneManager.LoadScene(sceneName);
+}
+
+public void ExitGame()
+{
+  Debug.Log("Game Closed");
+  Application.Quit();
+}
 }
