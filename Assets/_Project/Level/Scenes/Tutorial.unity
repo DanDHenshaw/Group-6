@@ -3338,6 +3338,10 @@ PrefabInstance:
       propertyPath: playerController
       value: 
       objectReference: {fileID: 2088929268}
+    - target: {fileID: 1012645254817041400, guid: fe659951b44e1ed4dbf3097043d60fb7, type: 3}
+      propertyPath: whatIsEnemy.m_Bits
+      value: 4096
+      objectReference: {fileID: 0}
     - target: {fileID: 3156273118316570793, guid: fe659951b44e1ed4dbf3097043d60fb7, type: 3}
       propertyPath: playerHead
       value: 

@@ -5,7 +5,7 @@ public class EnemyDeathState : EnemyBaseState
 {
   private readonly NavMeshAgent agent;
 
-  public EnemyDeathState(EnemyController enemy, NavMeshAgent agent) : base(enemy)
+  public EnemyDeathState(EnemyController enemy, Animator animator, NavMeshAgent agent) : base(enemy, animator)
   {
     this.agent = agent;
   }

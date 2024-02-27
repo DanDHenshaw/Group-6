@@ -6,7 +6,7 @@ public class EnemyChaseState : EnemyBaseState
   private readonly NavMeshAgent agent;
   private readonly Transform target;
 
-  public EnemyChaseState(EnemyController enemy, NavMeshAgent agent, Transform target) : base(enemy)
+  public EnemyChaseState(EnemyController enemy, Animator animator, NavMeshAgent agent, Transform target) : base(enemy, animator)
   {
     this.agent = agent;
     this.target = target;
