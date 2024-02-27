@@ -223,6 +223,7 @@ using Utilities;
     if (enemyObject.name == "level")
     {
       SceneManager.LoadScene("level 1");
+      return;
     }
 
     if (isBack)
