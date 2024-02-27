@@ -138,10 +138,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wanderRadius: 10
-  damage: 10
+  stillThreshold: 0.05
+  damage: 1
   attackRange: 2
   timeBetweenAttacks: 1
   agent: {fileID: 0}
+  rigidbody: {fileID: 0}
   animator: {fileID: 0}
   targetDetector: {fileID: 0}
   healthSystem: {fileID: 0}

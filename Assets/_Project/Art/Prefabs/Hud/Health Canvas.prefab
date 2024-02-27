@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3130631329857857332}
   - component: {fileID: 2307464317950493509}
   - component: {fileID: 2270552064208193334}
-  - component: {fileID: 272180854077442555}
   - component: {fileID: 7246275761250521842}
+  - component: {fileID: 286858386650612711}
   m_Layer: 5
   m_Name: Health Canvas
   m_TagString: Untagged
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &272180854077442555
+--- !u!114 &7246275761250521842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,10 +113,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 6306880340479782552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed7ef28588ad72c43a96408bdc6eb479, type: 3}
+  m_Script: {fileID: 11500000, guid: be9793503ea02954fbfa892743711fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventChannel: {fileID: 11400000, guid: 8f0bc027f1bcc994eb686b0a4c261866, type: 2}
+--- !u!114 &286858386650612711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6306880340479782552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869b04464ab2d16459647770d4d39994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventChannel: {fileID: 11400000, guid: 0c2cd27172c29ae479dc384ebad1a57f, type: 2}
   unityEvent:
     m_PersistentCalls:
       m_Calls:
@@ -132,15 +144,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7246275761250521842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6306880340479782552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be9793503ea02954fbfa892743711fa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

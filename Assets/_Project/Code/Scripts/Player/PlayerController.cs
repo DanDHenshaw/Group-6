@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
   [SerializeField] private Rigidbody _rigidbody;
   [SerializeField] private Transform orientation;
   [SerializeField] private Transform cinemachineCam;
+  [SerializeField] private HealthSystem healthSystem;
 
   // Getters & Setters
   public InputManager Input => input;
@@ -91,7 +92,11 @@ public class PlayerController : MonoBehaviour
       input.Look -= OnLook;
   }
 
-  private void Awake() => _rigidbody = GetComponent<Rigidbody>();
+  private void Awake()
+  {
+    _rigidbody = GetComponent<Rigidbody>();
+    healthSystem = GetComponent<HealthSystem>();
+  }
 
   private void Start()
   {
@@ -116,12 +121,14 @@ public class PlayerController : MonoBehaviour
 
   private void Update()
   {
-      if (freeze)
-      {
-          _rigidbody.velocity = Vector3.zero;
-      }
+    if (healthSystem.IsDead) GameManager.instance.LoseGame();
 
-      HandleLook();
+    if (freeze)
+    {
+        _rigidbody.velocity = Vector3.zero;
+    }
+
+    HandleLook();
   }
 
   /// <summary>

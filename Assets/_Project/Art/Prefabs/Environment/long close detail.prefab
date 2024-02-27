@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 3281564904310865052}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &-5123738060574877405
 MeshCollider:
@@ -121,6 +121,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2723559248880085088, guid: 3f08998d0fd4ce940b795d3e000db2ee, type: 3}
       propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2723559248880085088, guid: 3f08998d0fd4ce940b795d3e000db2ee, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-  using Utilities;
+using UnityEngine.SceneManagement;
+using Utilities;
 
   public class GrapplingGun : MonoBehaviour
   { 
@@ -219,6 +220,11 @@ using UnityEngine;
 
   private void HandleAttack()
   {
+    if (enemyObject.name == "level")
+    {
+      SceneManager.LoadScene("level 1");
+    }
+
     if (isBack)
     {
       enemyObject.GetComponentInParent<HealthSystem>().TakeDamage(damage);

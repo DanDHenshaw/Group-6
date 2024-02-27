@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 8297318341600651658}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2107198320907265202
 MonoBehaviour:
@@ -51,10 +51,12 @@ MonoBehaviour:
   - {fileID: 8297318341600651658}
   enemyData:
   - {fileID: 11400000, guid: 5baedf7521c62004fa3d0143244b2ec8, type: 2}
+  - {fileID: 11400000, guid: be1ee20eb9a76664e97fd999b85bc4af, type: 2}
+  - {fileID: 11400000, guid: c9c5dc0f1e3d8a44a86d2069f07351ae, type: 2}
   spawner:
     waves:
-    - name: test
-      enemiesToSpawn: 1
+    - name: Wave 1
+      enemiesToSpawn: 10
       enemySpawnRate: 1
     timeBetweenWaves: 5
     searchCountdownTime: 1
@@ -79,8 +81,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 16.999302
-  m_Center: {x: 0.3123722, y: 0, z: 0.5725899}
+  m_Radius: 83.44215
+  m_Center: {x: -2.4529495, y: 0, z: 0.57258606}
 --- !u!1 &2633274178641580685
 GameObject:
   m_ObjectHideFlags: 0
