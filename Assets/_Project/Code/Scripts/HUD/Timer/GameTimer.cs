@@ -6,7 +6,7 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
   private TextMeshProUGUI timerText;
-  private StopwatchTimer timer;
+  public StopwatchTimer timer;
 
   private void Awake()
   {
