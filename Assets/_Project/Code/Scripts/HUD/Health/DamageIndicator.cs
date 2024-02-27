@@ -1,40 +1,43 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class DamageIndicator : MonoBehaviour
 {
   private GameObject[] healthPrefabs;
 
-  private float MinX, MaxX, MinY, MaxY;
-  private Vector3 pos;
+  [SerializeField] private CanvasScaler scaler;
+  [SerializeField] private float offset = 250f;
 
   void Awake()
   {
     healthPrefabs = Resources.LoadAll<GameObject>("Health");
+
+    scaler = GetComponent<CanvasScaler>();
   }
 
-  void SpawnOnCanvas()
-  {
-    SpawnHealthDamage();
-    SetMinAndMax();
-  }
+    Vector3 UnscalePosition(Vector3 randomPos)
+    {
+        Vector2 referenceRes = scaler.referenceResolution;
+        Vector2 currentRes = new Vector2(Screen.width, Screen.height);
 
-  private void SetMinAndMax()
-  {
-    Vector3 Bounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        float widthRatio = currentRes.x / referenceRes.x;
+        float heightRatio = currentRes.y / referenceRes.y;
 
-    MinX = -Bounds.x;
-    MaxX = Bounds.x;
-    MinY = -Bounds.y;
-    MaxY = Bounds.y;
-  }
+        float ratio = Mathf.Lerp(heightRatio, widthRatio, scaler.matchWidthOrHeight);
+
+        Debug.Log(ratio);
+
+        return randomPos / ratio;
+    }
 
   public void SpawnHealthDamage()
   {
     int randomPrefab = Random.Range(0, healthPrefabs.Length - 1);
-    pos = new Vector3(Random.Range(0, 1920), Random.Range(0, 1080), 0);
-    GameObject healthPrefab = Instantiate(healthPrefabs[randomPrefab], pos, Quaternion.Euler(0, 0,65));
+    Vector3 pos = UnscalePosition(new Vector3(Random.Range(0, Screen.width / 2), Random.Range(0, Screen.height / 2), 0));
+    int randomRotZ = Random.Range(0, 360);
+    GameObject healthPrefab = Instantiate(healthPrefabs[randomPrefab], pos, Quaternion.Euler(0, 0, randomRotZ));
     healthPrefab.transform.SetParent(gameObject.transform);
-  }
+   }
 }
