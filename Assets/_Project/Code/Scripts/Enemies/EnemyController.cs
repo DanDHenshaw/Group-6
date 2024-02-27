@@ -6,7 +6,6 @@ using Utilities;
 [RequireComponent (typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent (typeof(TargetDetector))]
-[RequireComponent(typeof(Animator))]
 public class EnemyController : Entity, IKnockbackable
 {
   [Header("AI Config")]
@@ -37,9 +36,13 @@ public class EnemyController : Entity, IKnockbackable
   {
     agent = GetComponent<NavMeshAgent>();
     rigidbody = GetComponent<Rigidbody>();
-    animator = GetComponent<Animator>();
     targetDetector = GetComponent<TargetDetector>();
     healthSystem = GetComponent<HealthSystem>();
+
+    if(animator == null)
+    {
+      animator = GetComponent<Animator>();
+    }
   }
 
   private void Start()
@@ -50,11 +53,11 @@ public class EnemyController : Entity, IKnockbackable
 
     targetDetector.attackRange = attackRange;
 
-    var wanderState = new EnemyWanderState(this, agent, wanderRadius);
-    var chaseState = new EnemyChaseState(this, agent, targetDetector.Target);
-    var attackState = new EnemyAttackState(this, agent, targetDetector.Target);
-    var deathState = new EnemyDeathState(this, agent);
-    var knockbackState = new EnemyKnockbackState(this);
+    var wanderState = new EnemyWanderState(this, animator, agent, wanderRadius);
+    var chaseState = new EnemyChaseState(this, animator, agent, targetDetector.Target);
+    var attackState = new EnemyAttackState(this, animator, agent, targetDetector.Target);
+    var deathState = new EnemyDeathState(this, animator, agent);
+    var knockbackState = new EnemyKnockbackState(this, animator);
 
     At(wanderState, chaseState, new FuncPredicate(() => targetDetector.CanDetectTarget()));
     At(chaseState, wanderState, new FuncPredicate(() => !targetDetector.CanDetectTarget()));

@@ -1,6 +1,8 @@
-﻿public class EnemyKnockbackState : EnemyBaseState
+﻿using UnityEngine;
+
+public class EnemyKnockbackState : EnemyBaseState
 {
-  public EnemyKnockbackState(EnemyController enemy) : base(enemy) {}
+  public EnemyKnockbackState(EnemyController enemy, Animator animator) : base(enemy, animator) {}
 
   public override void OnEnter()
   {

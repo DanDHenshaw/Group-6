@@ -14,10 +14,10 @@ public abstract class EnemyBaseState : IState
 
   protected const float crossFadeDuration = 0.1f;
 
-  protected EnemyBaseState(EnemyController enemy)
+  protected EnemyBaseState(EnemyController enemy, Animator animator)
   {
     this.enemy = enemy;
-    animator = enemy.GetComponent<Animator>();
+    this.animator = animator;
   }
 
   public virtual void OnEnter()

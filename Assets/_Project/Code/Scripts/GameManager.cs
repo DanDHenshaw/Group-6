@@ -41,4 +41,9 @@ public class GameManager : MonoBehaviour
   {
     print("Boss Spawned");
   }
+
+  public void WinGame()
+  {
+    Debug.Log("WinGame");
+  }
 }

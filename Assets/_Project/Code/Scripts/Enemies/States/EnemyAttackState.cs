@@ -6,7 +6,7 @@ public class EnemyAttackState : EnemyBaseState
   private readonly NavMeshAgent agent;
   private readonly Transform target;
 
-  public EnemyAttackState(EnemyController enemy, NavMeshAgent agent, Transform target) : base(enemy)
+  public EnemyAttackState(EnemyController enemy, Animator animator, NavMeshAgent agent, Transform target) : base(enemy, animator)
   {
     this.agent = agent;
     this.target = target;

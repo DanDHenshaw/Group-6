@@ -221,11 +221,12 @@ using UnityEngine;
   {
     if (isBack)
     {
-      enemyObject.GetComponent<HealthSystem>().TakeDamage(damage);
-    } 
+      enemyObject.GetComponentInParent<HealthSystem>().TakeDamage(damage);
+      Destroy(enemyObject);
+    }
     else
     {
-      if(enemyObject.TryGetComponent(out IKnockbackable knockbackable))
+      if(enemyObject.GetComponentInParent<EnemyController>().TryGetComponent(out IKnockbackable knockbackable))
       {
         Vector3 force = knockbackForce * hitDirection;
         knockbackable.GetKnockedBack(force);
@@ -269,7 +270,7 @@ using UnityEngine;
     {
       GameObject enemy = raycastHitEnemy.collider.gameObject;
 
-      enemyObject = enemy.GetComponentInParent<EnemyController>().gameObject;
+      enemyObject = enemy;
 
       if(enemy.name.ToLower() == "front")
       {
@@ -312,6 +313,9 @@ using UnityEngine;
     {
         predictionPoint.gameObject.SetActive(false);
     }
+
+    if(raycastHit.normal != Vector3.zero)
+      predictionPoint.rotation = Quaternion.LookRotation(raycastHit.normal);
 
     predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
   }
