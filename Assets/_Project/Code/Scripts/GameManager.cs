@@ -72,13 +72,13 @@ public class GameManager : MonoBehaviour
       SpawnBoss();
 
       if (wavesDefeated != null)
-        wavesDefeated.text = "";
+        wavesDefeated.text = "Find/Defeat Mr Toaster";
     }
   }
 
   private string FormatDefeatedText()
   {
-    return "Gangs Defeated: " + spawnManagersComplete + "/" + spawnManagers;
+    return "Gangs to Defeat : " + (spawnManagers - spawnManagersComplete);
   }
 
   private void SpawnBoss()
