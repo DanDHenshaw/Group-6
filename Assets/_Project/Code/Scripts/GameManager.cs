@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class GameManager : MonoBehaviour
   [SerializeField] string cooldownSceneName;
 
   [Header("Boss Config")]
+  [SerializeField] private TextMeshProUGUI wavesDefeated;
   [SerializeField] private Transform bossSpawn;
   [SerializeField] private GameObject bossObject;
 
@@ -43,8 +46,21 @@ public class GameManager : MonoBehaviour
     CheckIfEmemiesDefeat();
   }
 
-  public void IncrementSpawnManager() => spawnManagers++;
-  public void IncrementSpawnManagerComplete() => spawnManagersComplete++;
+  public void IncrementSpawnManager()
+  {
+    spawnManagers++;
+
+    if(wavesDefeated != null)
+      wavesDefeated.text = FormatDefeatedText();
+  }
+
+  public void IncrementSpawnManagerComplete()
+  {
+    spawnManagersComplete++;
+
+    if (wavesDefeated != null)
+      wavesDefeated.text = FormatDefeatedText();
+  }
 
   private void CheckIfEmemiesDefeat()
   {
@@ -54,7 +70,15 @@ public class GameManager : MonoBehaviour
     if(spawnManagersComplete >= spawnManagers)
     {
       SpawnBoss();
+
+      if (wavesDefeated != null)
+        wavesDefeated.text = "";
     }
+  }
+
+  private string FormatDefeatedText()
+  {
+    return "Gangs Defeated: " + spawnManagersComplete + "/" + spawnManagers;
   }
 
   private void SpawnBoss()

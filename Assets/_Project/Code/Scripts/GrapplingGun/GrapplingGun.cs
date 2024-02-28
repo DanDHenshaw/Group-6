@@ -153,7 +153,7 @@ public class GrapplingGun : MonoBehaviour
   /// <param name="isDown"> bool - whether right click is pressed or released </param>
   private void HandleSwing(bool isDown)
   {
-      if (isDown && !IsSwinging && grappleCooldown.IsFinished)
+      if (isDown && !IsSwinging && grappleCooldown.IsFinished && !PauseManager.instance.IsPaused)
       {
           StartSwinging();
       }
