@@ -13,9 +13,10 @@ public class TimeData : MonoBehaviour
   {
     if(instance == null)
     {
-      instance = new TimeData();
+      instance = this;
 
-      DontDestroyOnLoad(gameObject);
+      transform.parent = null;
+      DontDestroyOnLoad(this);
     }
   }
 }

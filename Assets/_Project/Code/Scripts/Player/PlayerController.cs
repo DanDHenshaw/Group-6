@@ -85,8 +85,6 @@ public class PlayerController : MonoBehaviour
     input.Slide += OnSlide;
 
     input.Look += OnLook;
-
-    input.Pause += GameManager.instance.PauseGame;
   }
 
   private void OnDisable()
@@ -108,13 +106,16 @@ public class PlayerController : MonoBehaviour
 
   private void Start()
   {
-      input.EnablePlayerActions();
+    input.EnablePlayerActions();
 
-      Cursor.lockState = CursorLockMode.Locked;
-      Cursor.visible = false;
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
 
-      readyToJump = true;
-      wallNormalVector = Vector3.up;
+    readyToJump = true;
+    wallNormalVector = Vector3.up;
+
+    input.Pause += GameManager.instance.PauseGame;
+
   }
 
   private void LateUpdate()

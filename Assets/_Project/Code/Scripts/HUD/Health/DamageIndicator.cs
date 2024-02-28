@@ -34,7 +34,7 @@ public class DamageIndicator : MonoBehaviour
 
   public void SpawnHealthDamage()
   {
-    int randomPrefab = Random.Range(0, healthPrefabs.Length - 1);
+    int randomPrefab = Random.Range(0, healthPrefabs.Length);
     Vector3 pos = UnscalePosition(new Vector3(Random.Range(0, Screen.width / 2), Random.Range(0, Screen.height / 2), 0));
     int randomRotZ = Random.Range(0, 360);
     GameObject healthPrefab = Instantiate(healthPrefabs[randomPrefab], pos, Quaternion.Euler(0, 0, randomRotZ));

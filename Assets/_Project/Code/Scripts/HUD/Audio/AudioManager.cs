@@ -10,9 +10,10 @@ public class AudioManager : MonoBehaviour
 
 	[Header("Music")]
   [SerializeField] private AudioSource musicSource;
-  [SerializeField] List<AudioClip> musicClips = new List<AudioClip>();
+  [SerializeField] private AudioClip menuMusicAudioClip;
+  [SerializeField] private AudioClip gameMusicAudioClip;
 
-	[Header("SFX")]
+  [Header("SFX")]
 	[SerializeField] private AudioSource sfxSource;
 	[SerializeField] List<AudioClip> sfxClips = new List<AudioClip>();
 
@@ -36,9 +37,17 @@ public class AudioManager : MonoBehaviour
 		LoadVolume();
   }
 
-  public void BackgroundMusic()
+  public bool GameMusicPlaying() => musicSource.clip == gameMusicAudioClip && musicSource.isPlaying;
+  public void PlayGameMusic()
   {
-    musicSource.clip = musicClips[Random.Range(0, musicClips.Count)];
+    musicSource.clip = gameMusicAudioClip;
+    musicSource.Play();
+  }
+
+  public bool MenuMusicPlaying() => musicSource.clip == menuMusicAudioClip && musicSource.isPlaying;
+  public void PlayMenuMusic()
+  {
+    musicSource.clip = menuMusicAudioClip;
     musicSource.Play();
   }
 
