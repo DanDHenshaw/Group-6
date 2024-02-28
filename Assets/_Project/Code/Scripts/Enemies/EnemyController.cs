@@ -10,7 +10,7 @@ public class EnemyController : Entity, IKnockbackable
 {
   [Header("AI Config")]
   [SerializeField] float wanderRadius = 10f;
-  [SerializeField, Range(0.001f, 0.1f)] private float stillThreshold = 0.05f;
+  [SerializeField, Range(0.001f, 1f)] private float stillThreshold = 0.05f;
 
   [Header("Combat Config")] 
   [SerializeField] int damage = 10;
@@ -129,7 +129,7 @@ public class EnemyController : Entity, IKnockbackable
     player?.PlayDamage();
 
     yield return new WaitForFixedUpdate();
-    yield return new WaitUntil(() => rigidbody.velocity.magnitude < stillThreshold);
+    yield return new WaitUntil(() => rigidbody.velocity.magnitude < stillThreshold || healthSystem.IsDead);
     yield return new WaitForSeconds(0.25f);
 
     rigidbody.velocity = Vector3.zero;

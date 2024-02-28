@@ -49,7 +49,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 4aed61d0279633943940867d87cd61a3, type: 2}
   musicSource: {fileID: 1832293163370705019}
-  musicClips: []
+  menuMusicAudioClip: {fileID: 8300000, guid: 30bb3639c4ca8074fb87856de1022e94, type: 3}
+  gameMusicAudioClip: {fileID: 8300000, guid: 67f985005b9a0f5459bb029c1f729f57, type: 3}
+  sfxSource: {fileID: 6780436153964740064}
+  sfxClips: []
 --- !u!1 &3557355807047411850
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,7 +351,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 613718527355680332, guid: 4aed61d0279633943940867d87cd61a3, type: 2}
-  m_audioClip: {fileID: 8300000, guid: a84de80933627bf47bc1bd98c93c1be2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 30bb3639c4ca8074fb87856de1022e94, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
