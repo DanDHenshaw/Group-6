@@ -7,13 +7,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.insignia.tools": {
-      "version": "https://github.com/insignia-interactive/Unity-Tools.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "5cf8433e702b00c9bb2769337c028b7056b36fa3"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
