@@ -66,7 +66,7 @@ public class AudioPlayer : MonoBehaviour
   {
     if (enemyChatter.Length == 0) return;
 
-    audioSource.clip = enemyChatter[Random.Range(0, enemyChatter.Length - 1)];
+    audioSource.clip = enemyChatter[Random.Range(0, enemyChatter.Length)];
     audioSource.Play();
   }
 }
