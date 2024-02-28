@@ -76,9 +76,6 @@ public class EnemyController : Entity, IKnockbackable
 
   private void Update()
   {
-    if(healthSystem.IsDead)
-      StopAllCoroutines();
-
     if(transform.position.y <= -100)
       KillSelf();
 

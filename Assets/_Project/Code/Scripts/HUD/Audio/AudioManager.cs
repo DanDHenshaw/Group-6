@@ -38,14 +38,14 @@ public class AudioManager : MonoBehaviour
 
   public void BackgroundMusic()
   {
-	  AudioClip clip = musicClips[Random.Range(0, musicClips.Count)];
-		musicSource.PlayOneShot(clip);
+    musicSource.clip = musicClips[Random.Range(0, musicClips.Count)];
+    musicSource.Play();
   }
 
   public void SoundEffects()
   {
-	  AudioClip clip = sfxClips[Random.Range(0, sfxClips.Count)];
-	  sfxSource.PlayOneShot(clip);
+    sfxSource.clip = sfxClips[Random.Range(0, sfxClips.Count)];
+	  sfxSource.Play();
 	}
 
   void LoadVolume() // Volume saved in VolumeSettings.cs

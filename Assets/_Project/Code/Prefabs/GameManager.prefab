@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7002624328818893476}
   - component: {fileID: 3666148636026526490}
+  - component: {fileID: 4659191769999576202}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48,8 +49,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarSceneName: Health
   timerSceneName: Timer
+  cooldownSceneName: Cooldown
   bossSpawn: {fileID: 4448937986384780205}
   bossObject: {fileID: 3210404448515065023, guid: 9049d4d80432f4144b25248488bfbd0b, type: 3}
+--- !u!114 &4659191769999576202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2314762934541558632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 135a74f2474dfe045a4971d6e0148eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseSceneName: PauseMenu
 --- !u!1 &3021881411742483544
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +107,6 @@ GameObject:
   - component: {fileID: 2527461112194141560}
   - component: {fileID: 4495421856507500157}
   - component: {fileID: 7044049444073321768}
-  - component: {fileID: 6073584837748854731}
   m_Layer: 0
   m_Name: EventListeners
   m_TagString: Untagged
@@ -162,34 +176,6 @@ MonoBehaviour:
       - m_Target: {fileID: 3666148636026526490}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: IncrementSpawnManagerComplete
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &6073584837748854731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6817860039325601586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 869b04464ab2d16459647770d4d39994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventChannel: {fileID: 11400000, guid: b394f48dea51f944ab7e5d3aafa5ab90, type: 2}
-  unityEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3666148636026526490}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: WinGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

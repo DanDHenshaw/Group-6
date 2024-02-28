@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/_Project/Level/Scenes/Hud/PauseMenu.unity
     guid: 9a27811733e4f0f4abc2be2d4de18c5e
   - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/Cooldown.unity
+    guid: aa0118d4e5606c846a45d2816ccdf6d3
+  - enabled: 1
     path: Assets/_Project/Level/Scenes/Hud/Timer.unity
     guid: 355a155ac574b074b912d0d002b0419e
   - enabled: 1

@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
 
-  public class GrapplingGun : MonoBehaviour
-  { 
+public class GrapplingGun : MonoBehaviour
+{ 
   [Header("Weapon Config")]
   [SerializeField] private float maxDistance;
   public Transform muzzle;
+
+  [SerializeField] private float cooldownTime = 1f;
 
   [Header("Swing Config")]
   [SerializeField] private float jointMaxDistance = 0.8f;
@@ -39,6 +41,7 @@ using Utilities;
 
   [Header("Events")]
   [SerializeField] private EventChannel swingEventChannel;
+  [SerializeField] private FloatEventChannel cooldownPercentageChannel;
 
   [Header("References")]
   [SerializeField] private PlayerController playerController;
@@ -63,6 +66,9 @@ using Utilities;
 
   private Vector3 hitDirection = Vector3.zero;
 
+  private CountdownTimer grappleCooldown;
+  bool canGrapple = true;
+
   private void Awake()
   {
     input = playerController.Input;
@@ -73,6 +79,9 @@ using Utilities;
 
     lineRenderer = GetComponent<LineRenderer>();
     lineRenderer.enabled = false;
+
+    grappleCooldown = new CountdownTimer(cooldownTime);
+    grappleCooldown.Start();
   }
 
   private void OnEnable()
@@ -86,6 +95,7 @@ using Utilities;
       input.RightClick -= HandleReduceRope;
       input.LeftClick -= HandleSwing;
   }
+
 
   private void Start()
   {
@@ -108,6 +118,9 @@ using Utilities;
 
       lineRenderer.SetPosition(1, swingPoint);
     }
+
+    grappleCooldown.Tick(Time.deltaTime);
+    cooldownPercentageChannel?.Invoke(grappleCooldown.Progress);
   }
 
   private void LateUpdate()
@@ -140,7 +153,7 @@ using Utilities;
   /// <param name="isDown"> bool - whether right click is pressed or released </param>
   private void HandleSwing(bool isDown)
   {
-      if (isDown && !IsSwinging)
+      if (isDown && !IsSwinging && grappleCooldown.IsFinished)
       {
           StartSwinging();
       }
@@ -168,6 +181,8 @@ using Utilities;
 
     IsSwinging = true;
     swingEventChannel?.Invoke(default);
+
+    grappleCooldown.Start();
 
     if (predictionHit.transform.gameObject.CompareTag(movingObjectTag))
     {
@@ -224,6 +239,8 @@ using Utilities;
 
   private void HandleAttack()
   {
+    grappleCooldown.Start();
+
     if (enemyObject.name == "level")
     {
       SceneManager.LoadScene("level 1");

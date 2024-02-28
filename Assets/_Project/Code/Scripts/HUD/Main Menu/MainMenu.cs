@@ -1,24 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-private void Awake()
-{
-  Cursor.lockState = CursorLockMode.Confined;
-  Cursor.visible = true;
-}
+  [SerializeField] private EventChannel unpauseEventChannel;
 
-public void LoadScene(string sceneName)
-{
-  SceneManager.LoadScene(sceneName);
-}
+  private void Awake()
+  {
+    Cursor.lockState = CursorLockMode.Confined;
+    Cursor.visible = true;
+  }
 
-public void ExitGame()
-{
-  Debug.Log("Game Closed");
-  Application.Quit();
-}
+  public void LoadScene(string sceneName)
+  {
+    Time.timeScale = 1.0f;
+    SceneManager.LoadScene(sceneName);
+  }
+
+  public void ExitGame()
+  {
+    Debug.Log("Game Closed");
+    Application.Quit();
+  }
+
+  public void UnpauseGame()
+  {
+    unpauseEventChannel?.Invoke(default);
+  }
 }
