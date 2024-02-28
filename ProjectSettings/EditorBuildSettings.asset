@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/MainMenu.unity
+    guid: 6fdfd5fefc4ec5d4ba827fb7344f1a86
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/PauseMenu.unity
+    guid: 9a27811733e4f0f4abc2be2d4de18c5e
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/Cooldown.unity
+    guid: aa0118d4e5606c846a45d2816ccdf6d3
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/Timer.unity
+    guid: 355a155ac574b074b912d0d002b0419e
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/Health.unity
+    guid: d0acc608de3d76246ad03fab242e9db4
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Tutorial.unity
+    guid: 88fc461e07a60c34db0fa55c8df6f611
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/level 1.unity
+    guid: b5e41a524f17387459f1e72ac422277d
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/WinScreen.unity
+    guid: b60e0ec778d257b46a7037b2b0f0f325
+  - enabled: 1
+    path: Assets/_Project/Level/Scenes/Hud/GameOver.unity
+    guid: 8379ca7107d2e7340bd487d0c764d237
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 00fe179e865999f438c40caf787ab04b, type: 2}
