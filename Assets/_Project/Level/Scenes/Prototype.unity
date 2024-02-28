@@ -1270,6 +1270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3666148636026526490, guid: 9a1e971d7197b584abd7602527ebe9fb, type: 3}
+      propertyPath: cooldownSceneName
+      value: Cooldown
+      objectReference: {fileID: 0}
     - target: {fileID: 7002624328818893476, guid: 9a1e971d7197b584abd7602527ebe9fb, type: 3}
       propertyPath: m_RootOrder
       value: -1

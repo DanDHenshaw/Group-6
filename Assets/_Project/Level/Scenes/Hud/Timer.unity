@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ea751d3e6f3424b9fc14d4cdfd3c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unpauseEventChannel: {fileID: 0}
 --- !u!1001 &5663938781864694888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,4 +279,46 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4562398034710950329, guid: c0259db545e1b2b4b9f6d57b3a81eff9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1974722481}
+    - targetCorrespondingSourceObject: {fileID: 4562398034710950329, guid: c0259db545e1b2b4b9f6d57b3a81eff9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5663938781864694890}
   m_SourcePrefab: {fileID: 100100000, guid: c0259db545e1b2b4b9f6d57b3a81eff9, type: 3}
+--- !u!114 &5663938781864694889 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1827780217042454882, guid: c0259db545e1b2b4b9f6d57b3a81eff9, type: 3}
+  m_PrefabInstance: {fileID: 5663938781864694888}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974722475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f317070697993547b54d495aa08779e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5663938781864694890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974722475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869b04464ab2d16459647770d4d39994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventChannel: {fileID: 11400000, guid: b394f48dea51f944ab7e5d3aafa5ab90, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5663938781864694889}
+        m_TargetAssemblyTypeName: GameTimer, Assembly-CSharp
+        m_MethodName: WinGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

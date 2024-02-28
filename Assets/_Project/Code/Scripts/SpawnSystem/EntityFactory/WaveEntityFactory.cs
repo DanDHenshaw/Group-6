@@ -94,7 +94,7 @@ public class WaveEntitySpawner<T> where T : Entity
     };
   }
 
-  public void UpdateWaves()
+  public bool UpdateWaves()
   {
     if (state == SpawnState.WAITING)
     {
@@ -106,7 +106,7 @@ public class WaveEntitySpawner<T> where T : Entity
       }
       else
       {
-        return;
+        return true;
       }
     }
 
@@ -114,7 +114,7 @@ public class WaveEntitySpawner<T> where T : Entity
     {
       IsFinished = true;
       // Stops wave progressing
-      return;
+      return false;
     }
 
     if (state == SpawnState.COUNTING)
@@ -122,6 +122,8 @@ public class WaveEntitySpawner<T> where T : Entity
       // Spawn Wave
       state = SpawnState.SPAWNING;
     }
+
+    return true;
   }
 
   void WaveComplete()

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +7,12 @@ public class GameManager : MonoBehaviour
 {
   public static GameManager instance;
 
+  [Header("Sub Scenes")]
+  [SerializeField] string healthBarSceneName;
+  [SerializeField] string timerSceneName;
+  [SerializeField] string cooldownSceneName;
+
+  [Header("Boss Config")]
   [SerializeField] private Transform bossSpawn;
   [SerializeField] private GameObject bossObject;
 
@@ -20,6 +27,15 @@ public class GameManager : MonoBehaviour
     {
       instance = this;
     }
+
+    if (!string.IsNullOrEmpty(cooldownSceneName))
+      SceneManager.LoadScene(cooldownSceneName, LoadSceneMode.Additive);
+
+    if (!string.IsNullOrEmpty(healthBarSceneName))
+      SceneManager.LoadScene(healthBarSceneName, LoadSceneMode.Additive);
+
+    if(!string.IsNullOrEmpty(timerSceneName))
+      SceneManager.LoadScene(timerSceneName, LoadSceneMode.Additive);
   }
 
   private void Update()
@@ -50,12 +66,23 @@ public class GameManager : MonoBehaviour
 
   public void WinGame()
   {
-    Debug.Log("WinGame");
     SceneManager.LoadScene("WinScreen");
   }
 
   public void LoseGame()
   {
     SceneManager.LoadScene("GameOver");
+  }
+
+  public void PauseGame()
+  {
+    if(!PauseManager.instance.IsPaused)
+    {
+      PauseManager.instance.PauseGame();
+    } 
+    else
+    {
+      PauseManager.instance.UnpauseGame();
+    }
   }
 }

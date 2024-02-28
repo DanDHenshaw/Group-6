@@ -6,6 +6,8 @@ public class EnemySpawnManager : EntitySpawnManager
 
   [SerializeField] WaveEntitySpawner<EnemyController> spawner;
 
+  [SerializeField] GameObject arrow;
+
   private bool canSpawn = false;
 
   protected override void Awake()
@@ -25,7 +27,7 @@ public class EnemySpawnManager : EntitySpawnManager
     Spawn();
   }
 
-  public override void Spawn() => spawner.UpdateWaves();
+  public override void Spawn() => arrow.SetActive(spawner.UpdateWaves());
 
   private void OnTriggerEnter(Collider c)
   {

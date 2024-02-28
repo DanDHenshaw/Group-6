@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
   public LayerMask whatIsGround;
   public LayerMask whatIsWallrunnable;
 
+  [Header("Events")]
+  [SerializeField] private EventChannel jumpEventChannel;
+
   [Header("References")]
   [SerializeField] private InputManager input;
   [SerializeField] private Rigidbody _rigidbody;
@@ -78,18 +81,23 @@ public class PlayerController : MonoBehaviour
 
   private void OnEnable()
   {
-      input.Jump += OnJump;
-      input.Slide += OnSlide;
+    input.Jump += OnJump;
+    input.Slide += OnSlide;
 
-      input.Look += OnLook;
+    input.Look += OnLook;
+
+    input.Pause += GameManager.instance.PauseGame;
   }
 
   private void OnDisable()
   {
-      input.Jump -= OnJump;
-      input.Slide -= OnSlide;
+    input.Jump -= OnJump;
+    input.Slide -= OnSlide;
 
-      input.Look -= OnLook;
+    input.Look -= OnLook;
+
+    input.Pause -= GameManager.instance.PauseGame;
+
   }
 
   private void Awake()
@@ -313,16 +321,18 @@ public class PlayerController : MonoBehaviour
   /// </summary>
   private void HandleLook()
   {
-      Vector3 cameraMovement = new Vector3(input.Mouse.x, input.Mouse.y, 0);
-      cameraMovement *= sensitivity * deviceMultiplier * sensMultiplier;
+    if (PauseManager.instance.IsPaused) return;
 
-      desiredX = cinemachineCam.transform.localRotation.eulerAngles.y + cameraMovement.x;
-      xRotation -= cameraMovement.y;
-      xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-      FindWallRunRotation();
-      actualWallRotation = Mathf.SmoothDamp(actualWallRotation, wallRunRotation, ref wallRotationVel, 0.2f);
-      cinemachineCam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, actualWallRotation);
-      orientation.transform.localRotation = Quaternion.Euler(0f, desiredX, 0f);
+    Vector3 cameraMovement = new Vector3(input.Mouse.x, input.Mouse.y, 0);
+    cameraMovement *= sensitivity * deviceMultiplier * sensMultiplier;
+
+    desiredX = cinemachineCam.transform.localRotation.eulerAngles.y + cameraMovement.x;
+    xRotation -= cameraMovement.y;
+    xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+    FindWallRunRotation();
+    actualWallRotation = Mathf.SmoothDamp(actualWallRotation, wallRunRotation, ref wallRotationVel, 0.2f);
+    cinemachineCam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, actualWallRotation);
+    orientation.transform.localRotation = Quaternion.Euler(0f, desiredX, 0f);
   }
 
   private void ResetJump()
@@ -339,6 +349,7 @@ public class PlayerController : MonoBehaviour
       if ((isGrounded || isWallrunning || isSurfing) && readyToJump)
       {
           isJumping = true;
+          jumpEventChannel?.Invoke(default);
 
           Vector3 velocity = _rigidbody.velocity;
           readyToJump = false;

@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
 
-  public class GrapplingGun : MonoBehaviour
-  { 
+public class GrapplingGun : MonoBehaviour
+{ 
   [Header("Weapon Config")]
   [SerializeField] private float maxDistance;
   public Transform muzzle;
+
+  [SerializeField] private float cooldownTime = 1f;
 
   [Header("Swing Config")]
   [SerializeField] private float jointMaxDistance = 0.8f;
@@ -37,6 +39,10 @@ using Utilities;
   [SerializeField] private LayerMask whatIsGrappleable;
   [SerializeField] private LayerMask whatIsEnemy;
 
+  [Header("Events")]
+  [SerializeField] private EventChannel swingEventChannel;
+  [SerializeField] private FloatEventChannel cooldownPercentageChannel;
+
   [Header("References")]
   [SerializeField] private PlayerController playerController;
   [SerializeField] private InputManager input;
@@ -60,6 +66,9 @@ using Utilities;
 
   private Vector3 hitDirection = Vector3.zero;
 
+  private CountdownTimer grappleCooldown;
+  bool canGrapple = true;
+
   private void Awake()
   {
     input = playerController.Input;
@@ -70,6 +79,9 @@ using Utilities;
 
     lineRenderer = GetComponent<LineRenderer>();
     lineRenderer.enabled = false;
+
+    grappleCooldown = new CountdownTimer(cooldownTime);
+    grappleCooldown.Start();
   }
 
   private void OnEnable()
@@ -83,6 +95,7 @@ using Utilities;
       input.RightClick -= HandleReduceRope;
       input.LeftClick -= HandleSwing;
   }
+
 
   private void Start()
   {
@@ -105,6 +118,9 @@ using Utilities;
 
       lineRenderer.SetPosition(1, swingPoint);
     }
+
+    grappleCooldown.Tick(Time.deltaTime);
+    cooldownPercentageChannel?.Invoke(grappleCooldown.Progress);
   }
 
   private void LateUpdate()
@@ -137,7 +153,7 @@ using Utilities;
   /// <param name="isDown"> bool - whether right click is pressed or released </param>
   private void HandleSwing(bool isDown)
   {
-      if (isDown && !IsSwinging)
+      if (isDown && !IsSwinging && grappleCooldown.IsFinished)
       {
           StartSwinging();
       }
@@ -164,6 +180,9 @@ using Utilities;
     if (predictionHit.point == Vector3.zero) return;
 
     IsSwinging = true;
+    swingEventChannel?.Invoke(default);
+
+    grappleCooldown.Start();
 
     if (predictionHit.transform.gameObject.CompareTag(movingObjectTag))
     {
@@ -220,9 +239,12 @@ using Utilities;
 
   private void HandleAttack()
   {
+    grappleCooldown.Start();
+
     if (enemyObject.name == "level")
     {
       SceneManager.LoadScene("level 1");
+      return;
     }
 
     if (isBack)
@@ -239,10 +261,12 @@ using Utilities;
       }
     }
 
+    swingEventChannel?.Invoke(default);
+
     isAttacking = true;
 
     lineRenderer.enabled = true;
-    lineRenderer.SetPosition(1, predictionHit.point);
+    lineRenderer.SetPosition(1, predictionPoint.transform.position);
 
     Invoke("OnStopAttack", attackTime);
   }

@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 995262781}
   - component: {fileID: 995262780}
   - component: {fileID: 995262779}
+  - component: {fileID: 995262783}
   m_Layer: 5
   m_Name: WinGame Canvas
   m_TagString: Untagged
@@ -843,6 +844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ea751d3e6f3424b9fc14d4cdfd3c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unpauseEventChannel: {fileID: 0}
 --- !u!114 &995262780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -906,6 +908,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &995262783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995262777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d58d02a34cc6c34a8d5d01be85384cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 1635859399}
 --- !u!1 &1239225632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,7 +1414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 340}
+  m_AnchoredPosition: {x: 0, y: 312}
   m_SizeDelta: {x: -888.1459, y: -905.4123}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1635859398
@@ -1437,7 +1452,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Congradulations You Won
+  m_text: 'Congratulations You Won: 00:00:00'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -1464,12 +1479,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 120
-  m_fontSizeBase: 120
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMin: 102
+  m_fontSizeMax: 321.6
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

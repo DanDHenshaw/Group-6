@@ -17,6 +17,10 @@ public class EnemyWanderState : EnemyBaseState
   public override void OnEnter()
   {
     animator.CrossFade(WalkHash, crossFadeDuration);
+
+    if (Random.Range(0, 10) != 0) return;
+
+    enemy.PlayChatter();
   }
 
   public override void Update()

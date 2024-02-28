@@ -6,7 +6,7 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
   private TextMeshProUGUI timerText;
-  public StopwatchTimer timer;
+  private StopwatchTimer timer;
 
   private void Awake()
   {
@@ -18,7 +18,20 @@ public class GameTimer : MonoBehaviour
   void Update()
   {
     timer.Tick(Time.deltaTime);
-    var ts = TimeSpan.FromSeconds(timer.GetTime());
-    timerText.text = ts.ToString("mm\\:ss\\:ff");
+    timerText.text = FormatTime(timer.GetTime());
+  }
+
+  private string FormatTime(float time)
+  {
+    var ts = TimeSpan.FromSeconds(time);
+    return ts.ToString("mm\\:ss\\:ff");
+  }
+
+  public void WinGame()
+  {
+    timer.Stop();
+    TimeData.instance.time = timer.GetTime();
+    TimeData.instance.timeFormat = FormatTime(timer.GetTime());
+    GameManager.instance.WinGame();
   }
 }
